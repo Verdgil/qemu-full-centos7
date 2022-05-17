@@ -1,0 +1,49 @@
+From 5d8e4aefe49d4ea5237efc8132e44183b99ebabc Mon Sep 17 00:00:00 2001
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+Date: Wed, 16 Mar 2022 09:35:23 +0100
+Subject: [PATCH 03/14] vmxcap: Add 5-level EPT bit
+
+RH-Author: Vitaly Kuznetsov <vkuznets@redhat.com>
+RH-MergeRequest: 126: i386: Add Icelake-Server-v6 CPU model with 5-level EPT support
+RH-Commit: [1/2] 3f74e192278b8886de5dbeaf607521e9d3b744eb
+RH-Bugzilla: 2038051
+RH-Acked-by: Igor Mammedov <imammedo@redhat.com>
+RH-Acked-by: Cornelia Huck <cohuck@redhat.com>
+RH-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2038051
+Brew: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=43862630
+
+commit d312378e59658473aa91aa15c67ec6200d92e5ff
+Author: Vitaly Kuznetsov <vkuznets@redhat.com>
+Date:   Mon Feb 21 15:53:16 2022 +0100
+
+    vmxcap: Add 5-level EPT bit
+
+    5-level EPT is present in Icelake Server CPUs and is supported by QEMU
+    ('vmx-page-walk-5').
+
+    Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+    Message-Id: <20220221145316.576138-2-vkuznets@redhat.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+ scripts/kvm/vmxcap | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/kvm/vmxcap b/scripts/kvm/vmxcap
+index 6fe66d5f57..f140040104 100755
+--- a/scripts/kvm/vmxcap
++++ b/scripts/kvm/vmxcap
+@@ -249,6 +249,7 @@ controls = [
+         bits = {
+             0: 'Execute-only EPT translations',
+             6: 'Page-walk length 4',
++            7: 'Page-walk length 5',
+             8: 'Paging-structure memory type UC',
+             14: 'Paging-structure memory type WB',
+             16: '2MB EPT pages',
+-- 
+2.31.1
+

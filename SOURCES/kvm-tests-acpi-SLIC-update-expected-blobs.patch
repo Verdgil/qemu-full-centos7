@@ -1,0 +1,36 @@
+From 1dd4518bbf917158c9558dfb9e92be0a3f74b42b Mon Sep 17 00:00:00 2001
+From: Igor Mammedov <imammedo@redhat.com>
+Date: Mon, 27 Dec 2021 14:31:20 -0500
+Subject: [PATCH 08/14] tests: acpi: SLIC: update expected blobs
+
+RH-Author: Igor Mammedov <imammedo@redhat.com>
+RH-MergeRequest: 130: acpi: fix QEMU crash when started with SLIC table
+RH-Commit: [4/10] 9023e98b18b9145ef889eec912b222e039fcc76f
+RH-Bugzilla: 2043531
+RH-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+RH-Acked-by: Miroslav Rezanina <mrezanin@redhat.com>
+RH-Acked-by: MST <None>
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20211227193120.1084176-5-imammedo@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit c8adb4d222c42951a9d0367e5f5d4e1f5e2c9ad7)
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+---
+ tests/data/acpi/q35/FACP.slic               | Bin 244 -> 244 bytes
+ tests/data/acpi/q35/SLIC.slic               | Bin 0 -> 36 bytes
+ tests/qtest/bios-tables-test-allowed-diff.h |   2 --
+ 3 files changed, 2 deletions(-)
+
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 49dbf8fa3e..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,3 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/q35/FACP.slic",
+-"tests/data/acpi/q35/SLIC.slic",
+-- 
+2.31.1
+
