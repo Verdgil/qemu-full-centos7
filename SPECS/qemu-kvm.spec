@@ -151,7 +151,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 6.2.0
-Release: 11%{?rcrel}%{?dist}%{?cc_suffix}.3
+Release: 11%{?rcrel}%{?dist}%{?cc_suffix}.5
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -326,6 +326,24 @@ Patch85: kvm-RHEL-disable-seqpacket-for-vhost-vsock-device-in-rhe.patch
 Patch86: kvm-virtio-net-fix-map-leaking-on-error-during-receive.patch
 # For bz#2075640 - CVE-2022-26354 qemu-kvm: QEMU: vhost-vsock: missing virtqueue detach on error can lead to memory leak [rhel-9] [rhel-9.0.0.z]
 Patch87: kvm-vhost-vsock-detach-the-virqueue-element-in-case-of-e.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch88: kvm-virtio-net-setup-vhost_dev-and-notifiers-for-cvq-onl.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch89: kvm-virtio-net-align-ctrl_vq-index-for-non-mq-guest-for-.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch90: kvm-vhost-vdpa-fix-improper-cleanup-in-net_init_vhost_vd.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch91: kvm-vhost-net-fix-improper-cleanup-in-vhost_net_start.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch92: kvm-vhost-vdpa-backend-feature-should-set-only-once.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch93: kvm-vhost-vdpa-change-name-and-polarity-for-vhost_vdpa_o.patch
+# For bz#2095795 - PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z]
+Patch94: kvm-virtio-net-don-t-handle-mq-request-in-userspace-hand.patch
+# For bz#2109569 - Stalled IO Operations in VM [rhel-9.0.0.z]
+Patch95: kvm-linux-aio-fix-unbalanced-plugged-counter-in-laio_io_.patch
+# For bz#2109569 - Stalled IO Operations in VM [rhel-9.0.0.z]
+Patch96: kvm-linux-aio-explain-why-max-batch-is-checked-in-laio_i.patch
 
 # Source-git patches
 
@@ -1376,6 +1394,23 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Tue Aug 30 2022 Miroslav Rezanina <mrezanin@redhat.com> - 6.2.0-11.el9_0.5
+- kvm-linux-aio-fix-unbalanced-plugged-counter-in-laio_io_.patch [bz#2109569]
+- kvm-linux-aio-explain-why-max-batch-is-checked-in-laio_i.patch [bz#2109569]
+- Resolves: bz#2109569
+  (Stalled IO Operations in VM [rhel-9.0.0.z])
+
+* Fri Aug 05 2022 Miroslav Rezanina <mrezanin@redhat.com> - 6.2.0-11.el9_0.4
+- kvm-virtio-net-setup-vhost_dev-and-notifiers-for-cvq-onl.patch [bz#2095795]
+- kvm-virtio-net-align-ctrl_vq-index-for-non-mq-guest-for-.patch [bz#2095795]
+- kvm-vhost-vdpa-fix-improper-cleanup-in-net_init_vhost_vd.patch [bz#2095795]
+- kvm-vhost-net-fix-improper-cleanup-in-vhost_net_start.patch [bz#2095795]
+- kvm-vhost-vdpa-backend-feature-should-set-only-once.patch [bz#2095795]
+- kvm-vhost-vdpa-change-name-and-polarity-for-vhost_vdpa_o.patch [bz#2095795]
+- kvm-virtio-net-don-t-handle-mq-request-in-userspace-hand.patch [bz#2095795]
+- Resolves: bz#2095795
+  (PXE boot crash qemu when using multiqueue vDPA [rhel-9.0.0.z])
+
 * Mon May 09 2022 Miroslav Rezanina <mrezanin@redhat.com> - 6.2.0-11.el9_0.3
 - kvm-RHEL-disable-seqpacket-for-vhost-vsock-device-in-rhe.patch [bz#2071102]
 - kvm-virtio-net-fix-map-leaking-on-error-during-receive.patch [bz#2075635]

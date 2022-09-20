@@ -1,0 +1,56 @@
+From 1e3faef7048c8d36c9e3f004c7e08d96b30d055f Mon Sep 17 00:00:00 2001
+From: Si-Wei Liu <si-wei.liu@oracle.com>
+Date: Fri, 6 May 2022 19:28:15 -0700
+Subject: [PATCH 4/7] vhost-net: fix improper cleanup in vhost_net_start
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+RH-Author: Cindy Lu <lulu@redhat.com>
+RH-MergeRequest: 204: vdpa :sync the Multiqueue fixes for vhost-vDPA
+RH-Commit: [4/7] 31575b626fd5b381a4640e4f2608033bb141dc62
+RH-Bugzilla: 2095795
+RH-Acked-by: Laurent Vivier <lvivier@redhat.com>
+RH-Acked-by: Eugenio Pérez <eperezma@redhat.com>
+RH-Acked-by: Jason Wang <jasowang@redhat.com>
+
+vhost_net_start() missed a corresponding stop_one() upon error from
+vhost_set_vring_enable(). While at it, make the error handling for
+err_start more robust. No real issue was found due to this though.
+
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <1651890498-24478-5-git-send-email-si-wei.liu@oracle.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 6f3910b5eee00b8cc959e94659c0d524c482a418)
+Signed-off-by: Cindy Lu <lulu@redhat.com>
+---
+ hw/net/vhost_net.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index 30379d2ca4..d6d7c51f62 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -381,6 +381,7 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+             r = vhost_set_vring_enable(peer, peer->vring_enable);
+ 
+             if (r < 0) {
++                vhost_net_stop_one(get_vhost_net(peer), dev);
+                 goto err_start;
+             }
+         }
+@@ -390,7 +391,8 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+ 
+ err_start:
+     while (--i >= 0) {
+-        peer = qemu_get_peer(ncs , i);
++        peer = qemu_get_peer(ncs, i < data_queue_pairs ?
++                                  i : n->max_queue_pairs);
+         vhost_net_stop_one(get_vhost_net(peer), dev);
+     }
+     e = k->set_guest_notifiers(qbus->parent, total_notifiers, false);
+-- 
+2.31.1
+
