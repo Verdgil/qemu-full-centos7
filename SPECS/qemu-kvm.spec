@@ -83,7 +83,7 @@ Obsoletes: %1-rhev <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 6.2.0
-Release: 8%{?rcrel}%{?dist}
+Release: 20%{?rcrel}%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 15
 License: GPLv2 and GPLv2+ and CC-BY
@@ -118,7 +118,10 @@ Source33: qemu-pr-helper.socket
 Source34: 81-kvm-rhel.rules
 Source35: udev-kvm-check.c
 Source36: README.tests
-
+Source37: tests_data_acpi_pc_SSDT.dimmpxm
+Source38: tests_data_acpi_q35_FACP.slic
+Source39: tests_data_acpi_q35_SSDT.dimmpxm
+Source40: tests_data_acpi_virt_SSDT.memhp
 
 Patch0001: 0001-redhat-Adding-slirp-to-the-exploded-tree.patch
 Patch0005: 0005-Initial-redhat-build.patch
@@ -202,6 +205,228 @@ Patch52: kvm-iotests-281-Test-lingering-timers.patch
 Patch53: kvm-block-nbd-Move-s-ioc-on-AioContext-change.patch
 # For bz#2035185 - Qemu core dump when start guest with nbd node or do block jobs to nbd node
 Patch54: kvm-iotests-281-Let-NBD-connection-yield-in-iothread.patch
+# For bz#2062613 - Revert IBM-specific Ubuntu-compatibility machine type for 8.6-AV GA [rhel-8.7.0]
+Patch55: kvm-Revert-redhat-Add-hw_compat_4_2_extra-and-apply-to-u.patch
+# For bz#2062613 - Revert IBM-specific Ubuntu-compatibility machine type for 8.6-AV GA [rhel-8.7.0]
+Patch56: kvm-Revert-redhat-Enable-FDC-device-for-upstream-machine.patch
+# For bz#2062613 - Revert IBM-specific Ubuntu-compatibility machine type for 8.6-AV GA [rhel-8.7.0]
+Patch57: kvm-Revert-redhat-Expose-upstream-machines-pc-4.2-and-pc.patch
+# For bz#2060843 - [virtual network][vDPA] qemu crash after hot unplug vdpa device [rhel-8.7.0]
+Patch58: kvm-hw-virtio-vdpa-Fix-leak-of-host-notifier-memory-regi.patch
+# For bz#2062610 - Do operation to disk will hang in the guest of target host after hotplugging and migrating [rhel-8.7.0]
+Patch59: kvm-pci-expose-TYPE_XIO3130_DOWNSTREAM-name.patch
+# For bz#2062610 - Do operation to disk will hang in the guest of target host after hotplugging and migrating [rhel-8.7.0]
+Patch60: kvm-acpi-pcihp-pcie-set-power-on-cap-on-parent-slot.patch
+# For bz#2065207 - Win11 (q35+edk2) guest broke after install wsl2 through 'wsl --install -d Ubuntu-20.04' [rhel-8.7.0]
+Patch61: kvm-vmxcap-Add-5-level-EPT-bit.patch
+# For bz#2065207 - Win11 (q35+edk2) guest broke after install wsl2 through 'wsl --install -d Ubuntu-20.04' [rhel-8.7.0]
+Patch62: kvm-i386-Add-Icelake-Server-v6-CPU-model-with-5-level-EP.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch63: kvm-acpi-fix-QEMU-crash-when-started-with-SLIC-table.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch64: kvm-tests-acpi-whitelist-expected-blobs-before-changing-.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch65: kvm-tests-acpi-add-SLIC-table-test.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch66: kvm-tests-acpi-SLIC-update-expected-blobs.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch67: kvm-tests-acpi-manually-pad-OEM_ID-OEM_TABLE_ID-for-test.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch68: kvm-tests-acpi-whitelist-nvdimm-s-SSDT-and-FACP.slic-exp.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch69: kvm-acpi-fix-OEM-ID-OEM-Table-ID-padding.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch70: kvm-tests-acpi-update-expected-blobs.patch
+# For bz#2062611 - Guest can not start with SLIC acpi table [rhel-8.7.0]
+Patch71: kvm-tests-acpi-test-short-OEM_ID-OEM_TABLE_ID-values-in-.patch
+# For bz#2068202 - RHEL 9.0 guest with vsock device migration failed from RHEL 9.0 > RHEL 8.6 [rhel-8.7.0]
+Patch72: kvm-RHEL-disable-seqpacket-for-vhost-vsock-device-in-rhe.patch
+# For bz#2067118 - qemu crash after execute blockdev-reopen with  iothread
+Patch73: kvm-block-Lock-AioContext-for-drain_end-in-blockdev-reop.patch
+# For bz#2067118 - qemu crash after execute blockdev-reopen with  iothread
+Patch74: kvm-iotests-Test-blockdev-reopen-with-iothreads-and-thro.patch
+# For bz#2071070 - s390x/css: fix PMCW invalid mask
+Patch75: kvm-s390x-css-fix-PMCW-invalid-mask.patch
+# For bz#1999236 - CVE-2021-3750 virt:rhel/qemu-kvm: QEMU: hcd-ehci: DMA reentrancy issue leads to use-after-free [rhel-8]
+Patch76: kvm-hw-intc-arm_gicv3-Check-for-MEMTX_OK-instead-of-MEMT.patch
+# For bz#1999236 - CVE-2021-3750 virt:rhel/qemu-kvm: QEMU: hcd-ehci: DMA reentrancy issue leads to use-after-free [rhel-8]
+Patch77: kvm-softmmu-physmem-Simplify-flatview_write-and-address_.patch
+# For bz#1999236 - CVE-2021-3750 virt:rhel/qemu-kvm: QEMU: hcd-ehci: DMA reentrancy issue leads to use-after-free [rhel-8]
+Patch78: kvm-softmmu-physmem-Introduce-MemTxAttrs-memory-field-an.patch
+# For bz#2040738 - CVE-2021-4207 virt:rhel/qemu-kvm: QEMU: QXL: double fetch in qxl_cursor() can lead to heap buffer overflow [rhel-8]
+Patch79: kvm-display-qxl-render-fix-race-condition-in-qxl_cursor-.patch
+# For bz#2063262 - CVE-2022-26354 virt:rhel/qemu-kvm: QEMU: vhost-vsock: missing virtqueue detach on error can lead to memory leak [rhel-8]
+Patch80: kvm-vhost-vsock-detach-the-virqueue-element-in-case-of-e.patch
+# For bz#2043830 - [IBM 8.7 FEAT] KVM: Allow long kernel command lines for QEMU
+Patch81: kvm-s390x-ipl-support-extended-kernel-command-line-size.patch
+# For bz#2063206 - CVE-2022-26353 virt:rhel/qemu-kvm: QEMU: virtio-net: map leaking on error during receive [rhel-8]
+Patch82: kvm-virtio-net-fix-map-leaking-on-error-during-receive.patch
+# For bz#1519071 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
+Patch83: kvm-qcow2-Improve-refcount-structure-rebuilding.patch
+# For bz#1519071 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
+Patch84: kvm-iotests-108-Test-new-refcount-rebuild-algorithm.patch
+# For bz#1519071 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
+Patch85: kvm-qcow2-Add-errp-to-rebuild_refcount_structure.patch
+# For bz#1519071 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
+Patch86: kvm-iotests-108-Fix-when-missing-user_allow_other.patch
+# For bz#2065043 - Remove upstream-only devices from the qemu-kvm binary
+Patch87: kvm-Revert-redhat-Add-some-devices-for-exporting-upstrea.patch
+# For bz#2070417 - Windows guest hangs after updating and restarting from the guest OS [rhel-8.7.0]
+Patch88: kvm-target-i386-properly-reset-TSC-on-reset.patch
+# For bz#2040734 - CVE-2021-4206 virt:rhel/qemu-kvm: QEMU: QXL: integer overflow in cursor_alloc() can lead to heap buffer overflow [rhel-8.7]
+Patch89: kvm-ui-cursor-fix-integer-overflow-in-cursor_alloc-CVE-2.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch90: kvm-virtio-gpu-do-not-byteswap-padding.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch91: kvm-linux-headers-update-to-5.16-rc1.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch92: kvm-linux-headers-Update-headers-to-v5.17-rc1.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch93: kvm-linux-headers-include-missing-changes-from-5.17.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch94: kvm-x86-Fix-the-64-byte-boundary-enumeration-for-extende.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch95: kvm-x86-Add-AMX-XTILECFG-and-XTILEDATA-components.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch96: kvm-x86-Grant-AMX-permission-for-guest.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch97: kvm-x86-Add-XFD-faulting-bit-for-state-components.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch98: kvm-x86-Add-AMX-CPUIDs-enumeration.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch99: kvm-x86-add-support-for-KVM_CAP_XSAVE2-and-AMX-state-mig.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch100: kvm-x86-Support-XFD-and-AMX-xsave-data-migration.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch101: kvm-target-i386-kvm-do-not-access-uninitialized-variable.patch
+# For bz#1916415 - [Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions
+Patch102: kvm-KVM-x86-workaround-invalid-CPUID-0xD-9-info-on-some-.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch103: kvm-virtio-net-setup-vhost_dev-and-notifiers-for-cvq-onl.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch104: kvm-virtio-net-align-ctrl_vq-index-for-non-mq-guest-for-.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch105: kvm-vhost-vdpa-fix-improper-cleanup-in-net_init_vhost_vd.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch106: kvm-vhost-net-fix-improper-cleanup-in-vhost_net_start.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch107: kvm-vhost-vdpa-backend-feature-should-set-only-once.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch108: kvm-vhost-vdpa-change-name-and-polarity-for-vhost_vdpa_o.patch
+# For bz#2069946 - PXE boot crash qemu when using multiqueue vDPA
+Patch109: kvm-virtio-net-don-t-handle-mq-request-in-userspace-hand.patch
+# For bz#2029980 - Failed assertion in IDE emulation with Ceph backend
+Patch110: kvm-ide-Increment-BB-in-flight-counter-for-TRIM-BH.patch
+# For bz#2072932 - Qemu coredump when refreshing block limits on an actively used iothread block device [rhel.8.7]
+Patch111: kvm-block-Make-bdrv_refresh_limits-non-recursive.patch
+# For bz#2072932 - Qemu coredump when refreshing block limits on an actively used iothread block device [rhel.8.7]
+Patch112: kvm-iotests-Allow-using-QMP-with-the-QSD.patch
+# For bz#2072932 - Qemu coredump when refreshing block limits on an actively used iothread block device [rhel.8.7]
+Patch113: kvm-iotests-graph-changes-while-io-New-test.patch
+# For bz#2097209 - [virtiofs] mount virtiofs failed: SELinux: (dev virtiofs, type virtiofs) getxattr errno 111
+Patch114: kvm-virtiofsd-Fix-breakage-due-to-fuse_init_in-size-chan.patch
+# For bz#1951521 - CVE-2021-3507 virt:rhel/qemu-kvm: QEMU: fdc: heap buffer overflow in DMA read data transfers [rhel-8]
+Patch115: kvm-hw-block-fdc-Prevent-end-of-track-overrun-CVE-2021-3.patch
+# For bz#1951521 - CVE-2021-3507 virt:rhel/qemu-kvm: QEMU: fdc: heap buffer overflow in DMA read data transfers [rhel-8]
+Patch116: kvm-tests-qtest-fdc-test-Add-a-regression-test-for-CVE-2.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch117: kvm-migration-Never-call-twice-qemu_target_page_size.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch118: kvm-multifd-Rename-used-field-to-num.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch119: kvm-multifd-Add-missing-documentation.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch120: kvm-multifd-The-variable-is-only-used-inside-the-loop.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch121: kvm-multifd-remove-used-parameter-from-send_prepare-meth.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch122: kvm-multifd-remove-used-parameter-from-send_recv_pages-m.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch123: kvm-multifd-Fill-offset-and-block-for-reception.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch124: kvm-multifd-Make-zstd-compression-method-not-use-iovs.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch125: kvm-multifd-Make-zlib-compression-method-not-use-iovs.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch126: kvm-migration-All-this-fields-are-unsigned.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch127: kvm-multifd-Move-iov-from-pages-to-params.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch128: kvm-multifd-Make-zlib-use-iov-s.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch129: kvm-multifd-Make-zstd-use-iov-s.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch130: kvm-multifd-Remove-send_write-method.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch131: kvm-multifd-Use-a-single-writev-on-the-send-side.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch132: kvm-multifd-Use-normal-pages-array-on-the-send-side.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch133: kvm-QIOChannel-Add-flags-on-io_writev-and-introduce-io_f.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch134: kvm-QIOChannelSocket-Implement-io_writev-zero-copy-flag-.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch135: kvm-migration-Add-zero-copy-send-parameter-for-QMP-HMP-f.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch136: kvm-migration-Add-migrate_use_tls-helper.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch137: kvm-multifd-multifd_send_sync_main-now-returns-negative-.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch138: kvm-multifd-Send-header-packet-without-flags-if-zero-cop.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch139: kvm-multifd-Implement-zero-copy-write-in-multifd-migrati.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch140: kvm-QIOChannelSocket-Introduce-assert-and-reduce-ifdefs-.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch141: kvm-QIOChannelSocket-Fix-zero-copy-send-so-socket-flush-.patch
+# For bz#2072049 - Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8
+Patch142: kvm-migration-Change-zero_copy_send-from-migration-param.patch
+# For bz#2097652 - The migration port is not released if use it again for recovering postcopy migration
+Patch143: kvm-migration-Add-migration_incoming_transport_cleanup.patch
+# For bz#2097652 - The migration port is not released if use it again for recovering postcopy migration
+Patch144: kvm-migration-Allow-migrate-recover-to-run-multiple-time.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch145: kvm-pc-bios-s390-ccw-virtio-Introduce-a-macro-for-the-DA.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch146: kvm-pc-bios-s390-ccw-bootmap-Improve-the-guessing-logic-.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch147: kvm-pc-bios-s390-ccw-virtio-blkdev-Simplify-fix-virtio_i.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch148: kvm-pc-bios-s390-ccw-virtio-blkdev-Remove-virtio_assume_.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch149: kvm-pc-bios-s390-ccw-virtio-Set-missing-status-bits-whil.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch150: kvm-pc-bios-s390-ccw-virtio-Read-device-config-after-fea.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch151: kvm-pc-bios-s390-ccw-virtio-Beautify-the-code-for-readin.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch152: kvm-pc-bios-s390-ccw-Split-virtio-scsi-code-from-virtio_.patch
+# For bz#2098076 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
+Patch153: kvm-pc-bios-s390-ccw-virtio-blkdev-Request-the-right-fea.patch
+# For bz#2105410 - Stalled IO Operations in VM
+Patch154: kvm-linux-aio-fix-unbalanced-plugged-counter-in-laio_io_.patch
+# For bz#2105410 - Stalled IO Operations in VM
+Patch155: kvm-linux-aio-explain-why-max-batch-is-checked-in-laio_i.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch156: kvm-migration-Introduce-ram_transferred_add.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch157: kvm-migration-Tally-pre-copy-downtime-and-post-copy-byte.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch158: kvm-QIOChannelSocket-Fix-zero-copy-flush-returning-code-.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch159: kvm-Add-dirty-sync-missed-zero-copy-migration-stat.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch160: kvm-migration-multifd-Report-to-user-when-zerocopy-not-w.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch161: kvm-migration-Avoid-false-positive-on-non-supported-scen.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch162: kvm-migration-add-remaining-params-has_-true-in-migratio.patch
+# For bz#2110203 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
+Patch163: kvm-QIOChannelSocket-Add-support-for-MSG_ZEROCOPY-IPV6.patch
+# For bz#2112296 - virtio-blk: Can't boot fresh installation from used 512 cluster_size image under certain conditions
+Patch164: kvm-pc-bios-s390-ccw-Fix-booting-with-logical-block-size.patch
+# For bz#2120279 - Wrong max_sectors_kb and Maximum transfer length on the pass-through device [rhel-8.7]
+Patch165: kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch
 
 BuildRequires: wget
 BuildRequires: rpm-build
@@ -533,6 +758,10 @@ mkdir slirp
 %global qemu_kvm_build qemu_kvm_build
 mkdir -p %{qemu_kvm_build}
 
+cp -f %{SOURCE37} tests/data/acpi/pc/SSDT.dimmpxm
+cp -f %{SOURCE38} tests/data/acpi/q35/FACP.slic
+cp -f %{SOURCE39} tests/data/acpi/q35/SSDT.dimmpxm
+cp -f %{SOURCE40} tests/data/acpi/virt/SSDT.memhp
 
 %build
 %global buildarch %{kvm_target}-softmmu
@@ -855,7 +1084,7 @@ cp -R tests/avocado/* $RPM_BUILD_ROOT%{testsdir}/tests/avocado/
 # Install qemu.py and qmp/ scripts required to run avocado_qemu tests
 cp -R python/qemu $RPM_BUILD_ROOT%{testsdir}/python
 cp -R scripts/qmp/* $RPM_BUILD_ROOT%{testsdir}/scripts/qmp
-install -p -m 0755 ../tests/Makefile.include $RPM_BUILD_ROOT%{testsdir}/tests/
+install -p -m 0644 ../tests/Makefile.include $RPM_BUILD_ROOT%{testsdir}/tests/
 
 # Install qemu-iotests
 cp -R ../tests/qemu-iotests/* $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/
@@ -954,7 +1183,7 @@ install -D -p -m 0644 ../qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/%{name}.c
 # Install keymaps
 pushd pc-bios/keymaps
 for kmp in *; do
-   install $kmp ${RPM_BUILD_ROOT}%{_datadir}/%{name}/keymaps/
+   install -m 0644 $kmp ${RPM_BUILD_ROOT}%{_datadir}/%{name}/keymaps/
 done
 rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/keymaps/*.stamp
 popd
@@ -1367,6 +1596,205 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 
 
 %changelog
+* Fri Aug 26 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-20
+- kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch [bz#2120279]
+- Resolves: bz#2120279
+  (Wrong max_sectors_kb and Maximum transfer length on the pass-through device [rhel-8.7])
+
+* Tue Aug 16 2022 Miroslav Rezanina <mrezanin@redhat.com> - 6.2.0-19
+- kvm-migration-Introduce-ram_transferred_add.patch [bz#2110203]
+- kvm-migration-Tally-pre-copy-downtime-and-post-copy-byte.patch [bz#2110203]
+- kvm-QIOChannelSocket-Fix-zero-copy-flush-returning-code-.patch [bz#2110203]
+- kvm-Add-dirty-sync-missed-zero-copy-migration-stat.patch [bz#2110203]
+- kvm-migration-multifd-Report-to-user-when-zerocopy-not-w.patch [bz#2110203]
+- kvm-migration-Avoid-false-positive-on-non-supported-scen.patch [bz#2110203]
+- kvm-migration-add-remaining-params-has_-true-in-migratio.patch [bz#2110203]
+- kvm-QIOChannelSocket-Add-support-for-MSG_ZEROCOPY-IPV6.patch [bz#2110203]
+- kvm-pc-bios-s390-ccw-Fix-booting-with-logical-block-size.patch [bz#2112296]
+- Resolves: bz#2110203
+  (zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together)
+- Resolves: bz#2112296
+  (virtio-blk: Can't boot fresh installation from used 512 cluster_size image under certain conditions)
+
+* Tue Jul 19 2022 Camilla Conte <cconte@redhat.com> - 6.2.0-18
+- kvm-linux-aio-fix-unbalanced-plugged-counter-in-laio_io_.patch [bz#2105410]
+- kvm-linux-aio-explain-why-max-batch-is-checked-in-laio_i.patch [bz#2105410]
+- Resolves: bz#2105410
+  (Stalled IO Operations in VM)
+
+* Tue Jul 12 2022 Camilla Conte <cconte@redhat.com> - 6.2.0-17
+- kvm-migration-Never-call-twice-qemu_target_page_size.patch [bz#2072049]
+- kvm-multifd-Rename-used-field-to-num.patch [bz#2072049]
+- kvm-multifd-Add-missing-documentation.patch [bz#2072049]
+- kvm-multifd-The-variable-is-only-used-inside-the-loop.patch [bz#2072049]
+- kvm-multifd-remove-used-parameter-from-send_prepare-meth.patch [bz#2072049]
+- kvm-multifd-remove-used-parameter-from-send_recv_pages-m.patch [bz#2072049]
+- kvm-multifd-Fill-offset-and-block-for-reception.patch [bz#2072049]
+- kvm-multifd-Make-zstd-compression-method-not-use-iovs.patch [bz#2072049]
+- kvm-multifd-Make-zlib-compression-method-not-use-iovs.patch [bz#2072049]
+- kvm-migration-All-this-fields-are-unsigned.patch [bz#2072049]
+- kvm-multifd-Move-iov-from-pages-to-params.patch [bz#2072049]
+- kvm-multifd-Make-zlib-use-iov-s.patch [bz#2072049]
+- kvm-multifd-Make-zstd-use-iov-s.patch [bz#2072049]
+- kvm-multifd-Remove-send_write-method.patch [bz#2072049]
+- kvm-multifd-Use-a-single-writev-on-the-send-side.patch [bz#2072049]
+- kvm-multifd-Use-normal-pages-array-on-the-send-side.patch [bz#2072049]
+- kvm-QIOChannel-Add-flags-on-io_writev-and-introduce-io_f.patch [bz#2072049]
+- kvm-QIOChannelSocket-Implement-io_writev-zero-copy-flag-.patch [bz#2072049]
+- kvm-migration-Add-zero-copy-send-parameter-for-QMP-HMP-f.patch [bz#2072049]
+- kvm-migration-Add-migrate_use_tls-helper.patch [bz#2072049]
+- kvm-multifd-multifd_send_sync_main-now-returns-negative-.patch [bz#2072049]
+- kvm-multifd-Send-header-packet-without-flags-if-zero-cop.patch [bz#2072049]
+- kvm-multifd-Implement-zero-copy-write-in-multifd-migrati.patch [bz#2072049]
+- kvm-QIOChannelSocket-Introduce-assert-and-reduce-ifdefs-.patch [bz#2072049]
+- kvm-QIOChannelSocket-Fix-zero-copy-send-so-socket-flush-.patch [bz#2072049]
+- kvm-migration-Change-zero_copy_send-from-migration-param.patch [bz#2072049]
+- kvm-migration-Add-migration_incoming_transport_cleanup.patch [bz#2097652]
+- kvm-migration-Allow-migrate-recover-to-run-multiple-time.patch [bz#2097652]
+- kvm-pc-bios-s390-ccw-virtio-Introduce-a-macro-for-the-DA.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-bootmap-Improve-the-guessing-logic-.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-blkdev-Simplify-fix-virtio_i.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-blkdev-Remove-virtio_assume_.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-Set-missing-status-bits-whil.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-Read-device-config-after-fea.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-Beautify-the-code-for-readin.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-Split-virtio-scsi-code-from-virtio_.patch [bz#2098076]
+- kvm-pc-bios-s390-ccw-virtio-blkdev-Request-the-right-fea.patch [bz#2098076]
+- Resolves: bz#2072049
+  (Pull  MSG_ZEROCOPY on QEMU Live Migration Patches into RHEL 8)
+- Resolves: bz#2097652
+  (The migration port is not released if use it again for recovering postcopy migration)
+- Resolves: bz#2098076
+  (virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions)
+
+* Thu Jun 23 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-16
+- kvm-virtiofsd-Fix-breakage-due-to-fuse_init_in-size-chan.patch [bz#2097209]
+- kvm-hw-block-fdc-Prevent-end-of-track-overrun-CVE-2021-3.patch [bz#1951521]
+- kvm-tests-qtest-fdc-test-Add-a-regression-test-for-CVE-2.patch [bz#1951521]
+- Resolves: bz#2097209
+  ([virtiofs] mount virtiofs failed: SELinux: (dev virtiofs, type virtiofs) getxattr errno 111)
+- Resolves: bz#1951521
+  (CVE-2021-3507 virt:rhel/qemu-kvm: QEMU: fdc: heap buffer overflow in DMA read data transfers [rhel-8])
+
+* Tue Jun 14 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-15
+- kvm-virtio-gpu-do-not-byteswap-padding.patch [bz#1916415]
+- kvm-linux-headers-update-to-5.16-rc1.patch [bz#1916415]
+- kvm-linux-headers-Update-headers-to-v5.17-rc1.patch [bz#1916415]
+- kvm-linux-headers-include-missing-changes-from-5.17.patch [bz#1916415]
+- kvm-x86-Fix-the-64-byte-boundary-enumeration-for-extende.patch [bz#1916415]
+- kvm-x86-Add-AMX-XTILECFG-and-XTILEDATA-components.patch [bz#1916415]
+- kvm-x86-Grant-AMX-permission-for-guest.patch [bz#1916415]
+- kvm-x86-Add-XFD-faulting-bit-for-state-components.patch [bz#1916415]
+- kvm-x86-Add-AMX-CPUIDs-enumeration.patch [bz#1916415]
+- kvm-x86-add-support-for-KVM_CAP_XSAVE2-and-AMX-state-mig.patch [bz#1916415]
+- kvm-x86-Support-XFD-and-AMX-xsave-data-migration.patch [bz#1916415]
+- kvm-target-i386-kvm-do-not-access-uninitialized-variable.patch [bz#1916415]
+- kvm-KVM-x86-workaround-invalid-CPUID-0xD-9-info-on-some-.patch [bz#1916415]
+- kvm-virtio-net-setup-vhost_dev-and-notifiers-for-cvq-onl.patch [bz#2069946]
+- kvm-virtio-net-align-ctrl_vq-index-for-non-mq-guest-for-.patch [bz#2069946]
+- kvm-vhost-vdpa-fix-improper-cleanup-in-net_init_vhost_vd.patch [bz#2069946]
+- kvm-vhost-net-fix-improper-cleanup-in-vhost_net_start.patch [bz#2069946]
+- kvm-vhost-vdpa-backend-feature-should-set-only-once.patch [bz#2069946]
+- kvm-vhost-vdpa-change-name-and-polarity-for-vhost_vdpa_o.patch [bz#2069946]
+- kvm-virtio-net-don-t-handle-mq-request-in-userspace-hand.patch [bz#2069946]
+- kvm-ide-Increment-BB-in-flight-counter-for-TRIM-BH.patch [bz#2029980]
+- kvm-block-Make-bdrv_refresh_limits-non-recursive.patch [bz#2072932]
+- kvm-iotests-Allow-using-QMP-with-the-QSD.patch [bz#2072932]
+- kvm-iotests-graph-changes-while-io-New-test.patch [bz#2072932]
+- Resolves: bz#1916415
+  ([Intel 8.7 FEAT] qemu-kvm Sapphire Rapids (SPR) AMX Instructions)
+- Resolves: bz#2069946
+  (PXE boot crash qemu when using multiqueue vDPA)
+- Resolves: bz#2029980
+  (Failed assertion in IDE emulation with Ceph backend)
+- Resolves: bz#2072932
+  (Qemu coredump when refreshing block limits on an actively used iothread block device [rhel.8.7])
+
+* Thu May 19 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-14
+- kvm-Revert-redhat-Add-some-devices-for-exporting-upstrea.patch [bz#2065043]
+- kvm-target-i386-properly-reset-TSC-on-reset.patch [bz#2070417]
+- kvm-ui-cursor-fix-integer-overflow-in-cursor_alloc-CVE-2.patch [bz#2040734]
+- Resolves: bz#2065043
+  (Remove upstream-only devices from the qemu-kvm binary)
+- Resolves: bz#2070417
+  (Windows guest hangs after updating and restarting from the guest OS [rhel-8.7.0])
+- Resolves: bz#2040734
+  (CVE-2021-4206 virt:rhel/qemu-kvm: QEMU: QXL: integer overflow in cursor_alloc() can lead to heap buffer overflow [rhel-8.7])
+
+* Tue May 03 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-13
+- kvm-s390x-ipl-support-extended-kernel-command-line-size.patch [bz#2043830]
+- kvm-virtio-net-fix-map-leaking-on-error-during-receive.patch [bz#2063206]
+- kvm-qcow2-Improve-refcount-structure-rebuilding.patch [bz#1519071]
+- kvm-iotests-108-Test-new-refcount-rebuild-algorithm.patch [bz#1519071]
+- kvm-qcow2-Add-errp-to-rebuild_refcount_structure.patch [bz#1519071]
+- kvm-iotests-108-Fix-when-missing-user_allow_other.patch [bz#1519071]
+- Resolves: bz#2043830
+  ([IBM 8.7 FEAT] KVM: Allow long kernel command lines for QEMU)
+- Resolves: bz#2063206
+  (CVE-2022-26353 virt:rhel/qemu-kvm: QEMU: virtio-net: map leaking on error during receive [rhel-8])
+- Resolves: bz#1519071
+  (Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs))
+
+* Thu Apr 21 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-12
+- kvm-display-qxl-render-fix-race-condition-in-qxl_cursor-.patch [bz#2040738]
+- kvm-vhost-vsock-detach-the-virqueue-element-in-case-of-e.patch [bz#2063262]
+- Resolves: bz#2040738
+  (CVE-2021-4207 virt:rhel/qemu-kvm: QEMU: QXL: double fetch in qxl_cursor() can lead to heap buffer overflow [rhel-8])
+- Resolves: bz#2063262
+  (CVE-2022-26354 virt:rhel/qemu-kvm: QEMU: vhost-vsock: missing virtqueue detach on error can lead to memory leak [rhel-8])
+
+* Thu Apr 21 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-11
+- kvm-hw-intc-arm_gicv3-Check-for-MEMTX_OK-instead-of-MEMT.patch [bz#1999236]
+- kvm-softmmu-physmem-Simplify-flatview_write-and-address_.patch [bz#1999236]
+- kvm-softmmu-physmem-Introduce-MemTxAttrs-memory-field-an.patch [bz#1999236]
+- Resolves: bz#1999236
+  (CVE-2021-3750 virt:rhel/qemu-kvm: QEMU: hcd-ehci: DMA reentrancy issue leads to use-after-free [rhel-8])
+
+* Thu Apr 21 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-10
+- kvm-RHEL-disable-seqpacket-for-vhost-vsock-device-in-rhe.patch [bz#2068202]
+- kvm-block-Lock-AioContext-for-drain_end-in-blockdev-reop.patch [bz#2067118]
+- kvm-iotests-Test-blockdev-reopen-with-iothreads-and-thro.patch [bz#2067118]
+- kvm-s390x-css-fix-PMCW-invalid-mask.patch [bz#2071070]
+- kvm-Set-permission-on-installing-files.patch [bz#2072377]
+- Resolves: bz#2068202
+  (RHEL 9.0 guest with vsock device migration failed from RHEL 9.0 > RHEL 8.6 [rhel-8.7.0])
+- Resolves: bz#2067118
+  (qemu crash after execute blockdev-reopen with  iothread)
+- Resolves: bz#2071070
+  (s390x/css: fix PMCW invalid mask)
+- Resolves: bz#2072377
+  (Fix build warnings that occur when installing the keymap files)
+
+* Wed Apr 06 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-9
+- kvm-Revert-redhat-Add-hw_compat_4_2_extra-and-apply-to-u.patch [bz#2062613]
+- kvm-Revert-redhat-Enable-FDC-device-for-upstream-machine.patch [bz#2062613]
+- kvm-Revert-redhat-Expose-upstream-machines-pc-4.2-and-pc.patch [bz#2062613]
+- kvm-hw-virtio-vdpa-Fix-leak-of-host-notifier-memory-regi.patch [bz#2060843]
+- kvm-pci-expose-TYPE_XIO3130_DOWNSTREAM-name.patch [bz#2062610]
+- kvm-acpi-pcihp-pcie-set-power-on-cap-on-parent-slot.patch [bz#2062610]
+- kvm-vmxcap-Add-5-level-EPT-bit.patch [bz#2065207]
+- kvm-i386-Add-Icelake-Server-v6-CPU-model-with-5-level-EP.patch [bz#2065207]
+- kvm-acpi-fix-QEMU-crash-when-started-with-SLIC-table.patch [bz#2062611]
+- kvm-tests-acpi-whitelist-expected-blobs-before-changing-.patch [bz#2062611]
+- kvm-tests-acpi-add-SLIC-table-test.patch [bz#2062611]
+- kvm-tests-acpi-SLIC-update-expected-blobs.patch [bz#2062611]
+- kvm-tests-acpi-manually-pad-OEM_ID-OEM_TABLE_ID-for-test.patch [bz#2062611]
+- kvm-tests-acpi-whitelist-nvdimm-s-SSDT-and-FACP.slic-exp.patch [bz#2062611]
+- kvm-acpi-fix-OEM-ID-OEM-Table-ID-padding.patch [bz#2062611]
+- kvm-tests-acpi-update-expected-blobs.patch [bz#2062611]
+- kvm-tests-acpi-test-short-OEM_ID-OEM_TABLE_ID-values-in-.patch [bz#2062611]
+- kvm-rhel-workaround-for-lack-of-binary-patches-in-SRPM.patch [bz#2062611]
+- Resolves: bz#2062613
+  (Revert IBM-specific Ubuntu-compatibility machine type for 8.6-AV GA [rhel-8.7.0])
+- Resolves: bz#2060843
+  ([virtual network][vDPA] qemu crash after hot unplug vdpa device [rhel-8.7.0])
+- Resolves: bz#2062610
+  (Do operation to disk will hang in the guest of target host after hotplugging and migrating [rhel-8.7.0])
+- Resolves: bz#2065207
+  (Win11 (q35+edk2) guest broke after install wsl2 through 'wsl --install -d Ubuntu-20.04' [rhel-8.7.0])
+- Resolves: bz#2062611
+  (Guest can not start with SLIC acpi table [rhel-8.7.0])
+
 * Tue Feb 22 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-8
 - kvm-block-nbd-Delete-reconnect-delay-timer-when-done.patch [bz#2035185]
 - kvm-block-nbd-Assert-there-are-no-timers-when-closed.patch [bz#2035185]
