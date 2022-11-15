@@ -1,19 +1,19 @@
-From 6182990c1327658c417280a557d16191f70c91b7 Mon Sep 17 00:00:00 2001
+From 521a1953bc11ab6823dcbbee773bcf86e926a9e7 Mon Sep 17 00:00:00 2001
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 Date: Fri, 6 May 2022 19:28:18 -0700
-Subject: [PATCH 7/7] virtio-net: don't handle mq request in userspace handler
- for vhost-vdpa
+Subject: [PATCH 14/16] virtio-net: don't handle mq request in userspace
+ handler for vhost-vdpa
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-RH-Author: Cindy Lu <lulu@redhat.com>
-RH-MergeRequest: 204: vdpa :sync the Multiqueue fixes for vhost-vDPA
-RH-Commit: [7/7] 2e636b805ab3f365b1f26fbdac7a7d0ade62508d
-RH-Bugzilla: 2095795
-RH-Acked-by: Laurent Vivier <lvivier@redhat.com>
+RH-Author: Jason Wang <jasowang@redhat.com>
+RH-MergeRequest: 98: Multiqueue fixes for vhost-vDPA
+RH-Commit: [7/7] 9781cab45448ae16a00fbf10cf7995df6b984a0a (jasowang/qemu-kvm-cs)
+RH-Bugzilla: 2070804
 RH-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-RH-Acked-by: Jason Wang <jasowang@redhat.com>
+RH-Acked-by: Laurent Vivier <lvivier@redhat.com>
+RH-Acked-by: Cindy Lu <lulu@redhat.com>
 
 virtio_queue_host_notifier_read() tends to read pending event
 left behind on ioeventfd in the vhost_net_stop() path, and
@@ -68,16 +68,16 @@ Message-Id: <1651890498-24478-8-git-send-email-si-wei.liu@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 (cherry picked from commit 2a7888cc3aa31faee839fa5dddad354ff8941f4c)
-Signed-off-by: Cindy Lu <lulu@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
  hw/net/virtio-net.c | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index f118379bb4..7e172ef829 100644
+index f0bb29c741..099e65036d 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -1373,6 +1373,7 @@ static int virtio_net_handle_mq(VirtIONet *n, uint8_t cmd,
+@@ -1381,6 +1381,7 @@ static int virtio_net_handle_mq(VirtIONet *n, uint8_t cmd,
  {
      VirtIODevice *vdev = VIRTIO_DEVICE(n);
      uint16_t queue_pairs;
@@ -85,7 +85,7 @@ index f118379bb4..7e172ef829 100644
  
      virtio_net_disable_rss(n);
      if (cmd == VIRTIO_NET_CTRL_MQ_HASH_CONFIG) {
-@@ -1404,6 +1405,18 @@ static int virtio_net_handle_mq(VirtIONet *n, uint8_t cmd,
+@@ -1412,6 +1413,18 @@ static int virtio_net_handle_mq(VirtIONet *n, uint8_t cmd,
          return VIRTIO_NET_ERR;
      }
  

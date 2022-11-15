@@ -1,17 +1,16 @@
-From 9c5a68878b3c6ec16c94dfcfe388a830df8deb2f Mon Sep 17 00:00:00 2001
+From e7326c3a7e0fc022aa5c0ae07bc1e19ad1b6f2ed Mon Sep 17 00:00:00 2001
 From: Stefan Hajnoczi <stefanha@redhat.com>
 Date: Thu, 9 Jun 2022 17:47:11 +0100
-Subject: [PATCH 1/2] linux-aio: fix unbalanced plugged counter in
+Subject: [PATCH 5/6] linux-aio: fix unbalanced plugged counter in
  laio_io_unplug()
 
 RH-Author: Stefan Hajnoczi <stefanha@redhat.com>
-RH-MergeRequest: 210: linux-aio: fix unbalanced plugged counter in laio_io_unplug()
-RH-Bugzilla: 2109569
-RH-Acked-by: Hanna Reitz <hreitz@redhat.com>
+RH-MergeRequest: 102: linux-aio: fix unbalanced plugged counter in laio_io_unplug()
+RH-Commit: [1/2] 8a71da371c72521f1d70b8767ee564575e0d522b (stefanha/centos-stream-qemu-kvm)
+RH-Bugzilla: 2092788
+RH-Acked-by: Miroslav Rezanina <mrezanin@redhat.com>
 RH-Acked-by: Kevin Wolf <kwolf@redhat.com>
 RH-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-RH-Acked-by: Alberto Faria <None>
-RH-Commit: [1/2] bc1fa9b401cffb712f09935aba861d1a0bf74421
 
 Every laio_io_plug() call has a matching laio_io_unplug() call. There is
 a plugged counter that tracks the number of levels of plugging and
@@ -37,10 +36,10 @@ Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/block/linux-aio.c b/block/linux-aio.c
-index f53ae72e21..77f17ad596 100644
+index 4c423fcccf..6078da7e42 100644
 --- a/block/linux-aio.c
 +++ b/block/linux-aio.c
-@@ -360,8 +360,10 @@ void laio_io_unplug(BlockDriverState *bs, LinuxAioState *s,
+@@ -363,8 +363,10 @@ void laio_io_unplug(BlockDriverState *bs, LinuxAioState *s,
                      uint64_t dev_max_batch)
  {
      assert(s->io_q.plugged);

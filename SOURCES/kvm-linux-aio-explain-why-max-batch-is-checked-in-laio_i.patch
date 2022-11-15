@@ -1,17 +1,16 @@
-From 0cd0c916715c43f71cf249bafa2829b42aa67267 Mon Sep 17 00:00:00 2001
+From 49d9c9dced7278517105e9cfec34ea4af716432d Mon Sep 17 00:00:00 2001
 From: Stefan Hajnoczi <stefanha@redhat.com>
 Date: Thu, 9 Jun 2022 17:47:12 +0100
-Subject: [PATCH 2/2] linux-aio: explain why max batch is checked in
+Subject: [PATCH 6/6] linux-aio: explain why max batch is checked in
  laio_io_unplug()
 
 RH-Author: Stefan Hajnoczi <stefanha@redhat.com>
-RH-MergeRequest: 210: linux-aio: fix unbalanced plugged counter in laio_io_unplug()
-RH-Bugzilla: 2109569
-RH-Acked-by: Hanna Reitz <hreitz@redhat.com>
+RH-MergeRequest: 102: linux-aio: fix unbalanced plugged counter in laio_io_unplug()
+RH-Commit: [2/2] b3d6421086bde50d4baad2343b2df89c5f66950e (stefanha/centos-stream-qemu-kvm)
+RH-Bugzilla: 2092788
+RH-Acked-by: Miroslav Rezanina <mrezanin@redhat.com>
 RH-Acked-by: Kevin Wolf <kwolf@redhat.com>
 RH-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-RH-Acked-by: Alberto Faria <None>
-RH-Commit: [2/2] caed03e006e8004d3c0670b24e4454a94274d7d9
 
 It may not be obvious why laio_io_unplug() checks max batch. I discussed
 this with Stefano and have added a comment summarizing the reason.
@@ -29,10 +28,10 @@ Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/block/linux-aio.c b/block/linux-aio.c
-index 77f17ad596..85650c4222 100644
+index 6078da7e42..9c2393a2f7 100644
 --- a/block/linux-aio.c
 +++ b/block/linux-aio.c
-@@ -362,6 +362,12 @@ void laio_io_unplug(BlockDriverState *bs, LinuxAioState *s,
+@@ -365,6 +365,12 @@ void laio_io_unplug(BlockDriverState *bs, LinuxAioState *s,
      assert(s->io_q.plugged);
      s->io_q.plugged--;
  
