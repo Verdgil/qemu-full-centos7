@@ -1,0 +1,52 @@
+From c9f8004b6adf7020ba742d16b132e84ff6e57863 Mon Sep 17 00:00:00 2001
+From: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+Date: Tue, 10 May 2022 20:54:39 -0300
+Subject: [PATCH] mos6522: fix linking error when CONFIG_MOS6522 is not set
+
+When CONFIG_MOS6522 is not set, building ppc64-softmmu target fails:
+
+/usr/bin/ld: libqemu-ppc64-softmmu.fa.p/monitor_misc.c.o:(.data+0x1158): undefined reference to `hmp_info_via'
+
+Make devices configuration available in hmp-commands*.hx and check for
+CONFIG_MOS6522.
+
+Fixes: 409e9f7131e5 (mos6522: add "info via" HMP command for debugging)
+Signed-off-by: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20220510235439.54775-1-muriloo@linux.ibm.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+---
+ hmp-commands-info.hx | 2 +-
+ monitor/misc.c       | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index adfa085a9b..834bed089e 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -880,7 +880,7 @@ SRST
+     Show intel SGX information.
+ ERST
+ 
+-#if defined(TARGET_M68K) || defined(TARGET_PPC)
++#if defined(CONFIG_MOS6522)
+     {
+         .name         = "via",
+         .args_type    = "",
+diff --git a/monitor/misc.c b/monitor/misc.c
+index 6c5bb82d3b..3d2312ba8d 100644
+--- a/monitor/misc.c
++++ b/monitor/misc.c
+@@ -84,6 +84,9 @@
+ #include "hw/s390x/storage-attributes.h"
+ #endif
+ 
++/* Make devices configuration available for use in hmp-commands*.hx templates */
++#include CONFIG_DEVICES
++
+ /* file descriptors passed via SCM_RIGHTS */
+ typedef struct mon_fd_t mon_fd_t;
+ struct mon_fd_t {
