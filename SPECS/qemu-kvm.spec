@@ -55,7 +55,7 @@
 
 %global tools_only 0
 %ifarch %{power64}
-    %global tools_only 0
+    %global tools_only 1
 %endif
 
 %ifnarch %{ix86} x86_64
@@ -151,7 +151,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 7.0.0
-Release: 13%{?rcrel}%{?dist}%{?cc_suffix}.0.1
+Release: 13%{?rcrel}%{?dist}%{?cc_suffix}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -494,7 +494,6 @@ Patch169: kvm-virtio-scsi-fix-race-in-virtio_scsi_dataplane_start.patch
 Patch170: kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch
 # For bz#2117546 - [RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command
 Patch171: kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch
-Patch172: 9999-fix-linking-error.patch
 
 # Source-git patches
 
@@ -799,7 +798,7 @@ Summary: QEMU usbredir support
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 Requires: usbredir >= 0.7.1
 Provides: %{name}-hw-usbredir
-Obsoletes: %{name}-hw-usbredir <= %{epoch}:%{version}
+Obsoletes: %{name}-hw-usbredir <= %{epoch}:%{version} 
 
 %description device-usb-redirect
 This package provides usbredir support.
@@ -1530,9 +1529,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
-* Fri Dec 23 2022 Release Engineering <releng@rockylinux.org> - 7.0.0-13.0.1
-- Enable ppc64le builds for qemu-kvm (plus)
-
 * Tue Sep 13 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13
 - kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch [bz#2117546]
 - kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch [bz#2117546]
