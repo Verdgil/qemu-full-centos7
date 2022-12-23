@@ -494,6 +494,7 @@ Patch169: kvm-virtio-scsi-fix-race-in-virtio_scsi_dataplane_start.patch
 Patch170: kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch
 # For bz#2117546 - [RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command
 Patch171: kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch
+Patch172: 9999-fix-linking-error.patch
 
 # Source-git patches
 
