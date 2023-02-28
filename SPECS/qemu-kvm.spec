@@ -151,7 +151,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 7.0.0
-Release: 13%{?rcrel}%{?dist}%{?cc_suffix}
+Release: 13%{?rcrel}%{?dist}%{?cc_suffix}.2
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -494,6 +494,10 @@ Patch169: kvm-virtio-scsi-fix-race-in-virtio_scsi_dataplane_start.patch
 Patch170: kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch
 # For bz#2117546 - [RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command
 Patch171: kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch
+# For bz#2134896 - Windows guest reboot after migration with wsl2 installed inside [rhel-9.1.0.z]
+Patch172: kvm-target-i386-kvm-fix-kvmclock_current_nsec-Assertion-.patch
+# For bz#2168221 - while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set [rhel-9.1.0.z]
+Patch173: kvm-migration-Read-state-once.patch
 
 # Source-git patches
 
@@ -1529,6 +1533,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Mon Feb 13 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13.el9_1.2
+- kvm-migration-Read-state-once.patch [bz#2168221]
+- Resolves: bz#2168221
+  (while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set [rhel-9.1.0.z])
+
+* Thu Feb 02 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13.el9_1.1
+- kvm-target-i386-kvm-fix-kvmclock_current_nsec-Assertion-.patch [bz#2134896]
+- Resolves: bz#2134896
+  (Windows guest reboot after migration with wsl2 installed inside [rhel-9.1.0.z])
+
 * Tue Sep 13 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13
 - kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch [bz#2117546]
 - kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch [bz#2117546]

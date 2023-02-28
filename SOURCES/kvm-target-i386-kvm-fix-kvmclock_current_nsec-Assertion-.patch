@@ -1,0 +1,61 @@
+From 0423b2a79991c6ae7aa65123e0d4f52294c006ee Mon Sep 17 00:00:00 2001
+From: Jon Maloy <jmaloy@redhat.com>
+Date: Wed, 18 Jan 2023 11:08:30 -0500
+Subject: [PATCH] target/i386/kvm: fix kvmclock_current_nsec: Assertion
+ `time.tsc_timestamp <= migration_tsc' failed
+
+RH-Author: Jon Maloy <jmaloy@redhat.com>
+RH-MergeRequest: 248: target/i386/kvm: fix kvmclock_current_nsec: Assertion `time.tsc_timestamp <= migration_tsc' failed
+RH-Bugzilla: 2134896
+RH-Acked-by: Miroslav Rezanina <mrezanin@redhat.com>
+RH-Acked-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+RH-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+RH-Commit: [1/1] f7b46dad79581f7751a3f00a52d766207652e048 (redhat/rhel/src/qemu-kvm/jons-qemu-kvm-2)
+
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2134896
+Upstream: Merged
+
+commit c4ef867f2949bf2a2ae18a4e27cf1a34bbc8aecb
+Author: Ray Zhang <zhanglei002@gmail.com>
+Date:   Thu Sep 22 18:05:23 2022 +0800
+
+    target/i386/kvm: fix kvmclock_current_nsec: Assertion `time.tsc_timestamp <= migration_tsc' failed
+
+    New KVM_CLOCK flags were added in the kernel.(c68dc1b577eabd5605c6c7c08f3e07ae18d30d5d)
+    ```
+    + #define KVM_CLOCK_VALID_FLAGS                                         \
+    +       (KVM_CLOCK_TSC_STABLE | KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC)
+
+            case KVM_CAP_ADJUST_CLOCK:
+    -               r = KVM_CLOCK_TSC_STABLE;
+    +               r = KVM_CLOCK_VALID_FLAGS;
+    ```
+
+    kvm_has_adjust_clock_stable needs to handle additional flags,
+    so that s->clock_is_reliable can be true and kvmclock_current_nsec doesn't need to be called.
+
+    Signed-off-by: Ray Zhang <zhanglei002@gmail.com>
+    Message-Id: <20220922100523.2362205-1-zhanglei002@gmail.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Signed-off-by: Jon Maloy <jmaloy@redhat.com>
+---
+ target/i386/kvm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ef70e2c85f..2c603df792 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -153,7 +153,7 @@ bool kvm_has_adjust_clock_stable(void)
+ {
+     int ret = kvm_check_extension(kvm_state, KVM_CAP_ADJUST_CLOCK);
+ 
+-    return (ret == KVM_CLOCK_TSC_STABLE);
++    return (ret & KVM_CLOCK_TSC_STABLE);
+ }
+ 
+ bool kvm_has_adjust_clock(void)
+-- 
+2.31.1
+
