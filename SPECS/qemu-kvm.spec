@@ -83,7 +83,7 @@ Obsoletes: %1-rhev <= %{epoch}:%{version}-%{release}
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 6.2.0
-Release: 20%{?rcrel}%{?dist}
+Release: 31%{?rcrel}%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 15
 License: GPLv2 and GPLv2+ and CC-BY
@@ -427,6 +427,205 @@ Patch163: kvm-QIOChannelSocket-Add-support-for-MSG_ZEROCOPY-IPV6.patch
 Patch164: kvm-pc-bios-s390-ccw-Fix-booting-with-logical-block-size.patch
 # For bz#2120279 - Wrong max_sectors_kb and Maximum transfer length on the pass-through device [rhel-8.7]
 Patch165: kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch
+# For bz#2117149 - Can't run when memory backing with hugepages and backend type memfd
+Patch166: kvm-backends-hostmem-Fix-support-of-memory-backend-memfd.patch
+# For bz#2125271 - [RHEL8.7] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command [rhel-8.8.0]
+Patch167: kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch
+# For bz#2125271 - [RHEL8.7] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command [rhel-8.8.0]
+Patch168: kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch
+# For bz#2124757 - RHEL8: skey test in kvm_unit_test got failed
+Patch169: kvm-redhat-Update-linux-headers-linux-kvm.h-to-v5.18-rc6.patch
+# For bz#2124757 - RHEL8: skey test in kvm_unit_test got failed
+Patch170: kvm-target-s390x-kvm-Honor-storage-keys-during-emulation.patch
+# For bz#2018885 - [virtiofs] virtiofsd debug log's timestamp is NULL
+Patch171: kvm-virtiofsd-use-g_date_time_get_microsecond-to-get-sub.patch
+# For bz#2116302 - RHEL8.6 - virtiofs will not mount fs on secure execution guest
+Patch172: kvm-virtio-fix-the-condition-for-iommu_platform-not-supp.patch
+# For bz#2116302 - RHEL8.6 - virtiofs will not mount fs on secure execution guest
+Patch173: kvm-virtio-fix-feature-negotiation-for-ACCESS_PLATFORM.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch174: kvm-s390x-pci-use-a-reserved-ID-for-the-default-PCI-grou.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch175: kvm-s390x-pci-don-t-use-hard-coded-dma-range-in-reg_ioat.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch176: kvm-s390x-pci-use-the-passthrough-measurement-update-int.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch177: kvm-s390x-pci-add-supported-DT-information-to-clp-respon.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch178: kvm-Update-linux-headers-to-v6.0-rc4.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch179: kvm-s390x-pci-add-routine-to-get-host-function-handle-fr.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch180: kvm-s390x-pci-enable-for-load-store-interpretation.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch181: kvm-s390x-pci-don-t-fence-interpreted-devices-without-MS.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch182: kvm-s390x-pci-enable-adapter-event-notification-for-inte.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch183: kvm-s390x-pci-let-intercept-devices-have-separate-PCI-gr.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch184: kvm-s390x-pci-reflect-proper-maxstbl-for-groups-of-inter.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch185: kvm-s390x-s390-virtio-ccw-Switch-off-zPCI-enhancements-o.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch186: kvm-dump-Use-ERRP_GUARD.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch187: kvm-dump-Remove-the-sh_info-variable.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch188: kvm-dump-Introduce-shdr_num-to-decrease-complexity.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch189: kvm-dump-Remove-the-section-if-when-calculating-the-memo.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch190: kvm-dump-Add-more-offset-variables.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch191: kvm-dump-Introduce-dump_is_64bit-helper-function.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch192: kvm-dump-Consolidate-phdr-note-writes.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch193: kvm-dump-Cleanup-dump_begin-write-functions.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch194: kvm-dump-Consolidate-elf-note-function.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch195: kvm-dump-Replace-opaque-DumpState-pointer-with-a-typed-o.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch196: kvm-dump-Rename-write_elf_loads-to-write_elf_phdr_loads.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch197: kvm-dump-Refactor-dump_iterate-and-introduce-dump_filter.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch198: kvm-dump-Rework-get_start_block.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch199: kvm-dump-Rework-filter-area-variables.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch200: kvm-dump-Rework-dump_calculate_size-function.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch201: kvm-dump-Split-elf-header-functions-into-prepare-and-wri.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch202: kvm-dump-Rename-write_elf-_phdr_note-to-prepare_elf-_phd.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch203: kvm-dump-simplify-a-bit-kdump-get_next_page.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch204: kvm-dump-fix-kdump-to-work-over-non-aligned-blocks.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch205: kvm-dump-Use-a-buffer-for-ELF-section-data-and-headers.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch206: kvm-dump-Write-ELF-section-headers-right-after-ELF-heade.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch207: kvm-dump-Reorder-struct-DumpState.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch208: kvm-dump-Reintroduce-memory_offset-and-section_offset.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch209: kvm-dump-Add-architecture-section-and-section-string-tab.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch210: kvm-s390x-Add-protected-dump-cap.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch211: kvm-s390x-Introduce-PV-query-interface.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch212: kvm-include-elf.h-add-s390x-note-types.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch213: kvm-s390x-Add-KVM-PV-dump-interface.patch
+# For bz#1664378 - [IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part
+# For bz#2043909 - [IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part
+Patch214: kvm-s390x-pv-Add-dump-support.patch
+# For bz#2129760 - CVE-2022-3165 virt:rhel/qemu-kvm: QEMU: VNC: integer underflow in vnc_client_cut_text_ext leads to CPU exhaustion [rhel-8]
+Patch215: kvm-ui-vnc-clipboard-fix-integer-underflow-in-vnc_client.patch
+# For bz#2132609 - qemu-kvm: backport some aarch64 fixes
+Patch216: kvm-hw-acpi-Add-ospm_status-hook-implementation-for-acpi.patch
+# For bz#2132609 - qemu-kvm: backport some aarch64 fixes
+Patch217: kvm-target-arm-kvm-Retry-KVM_CREATE_VM-call-if-it-fails-.patch
+# For bz#2128225 - [s390x] [RHEL8][s390x-ccw bios] lacking document about parameter loadparm in qemu
+Patch218: kvm-docs-system-s390x-Document-the-loadparm-machine-prop.patch
+# For bz#2128225 - [s390x] [RHEL8][s390x-ccw bios] lacking document about parameter loadparm in qemu
+Patch219: kvm-s390x-Register-TYPE_S390_CCW_MACHINE-properties-as-c.patch
+# For bz#2141896 - VMs hung on vnc_clipboard_send
+Patch220: kvm-ui-vnc.c-Fixed-a-deadlock-bug.patch
+# For bz#2148545 - CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8]
+Patch221: kvm-hw-display-qxl-Have-qxl_log_command-Return-early-if-.patch
+# For bz#2148545 - CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8]
+Patch222: kvm-hw-display-qxl-Document-qxl_phys2virt.patch
+# For bz#2148545 - CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8]
+Patch223: kvm-hw-display-qxl-Pass-requested-buffer-size-to-qxl_phy.patch
+# For bz#2148545 - CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8]
+Patch224: kvm-hw-display-qxl-Avoid-buffer-overrun-in-qxl_phys2virt.patch
+# For bz#2148545 - CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8]
+Patch225: kvm-hw-display-qxl-Assert-memory-slot-fits-in-preallocat.patch
+# For bz#2155448 - RHEL8.8 - KVM: s390: pv: don't allow userspace to set the clock under PV - QEMU part
+Patch226: kvm-s390x-tod-kvm-don-t-save-restore-the-TOD-in-PV-guest.patch
+# For bz#2125119 - Mirror job with "copy-mode":"write-blocking" that used for storage migration can't converge under heavy I/O
+Patch227: kvm-block-mirror-Do-not-wait-for-active-writes.patch
+# For bz#2125119 - Mirror job with "copy-mode":"write-blocking" that used for storage migration can't converge under heavy I/O
+Patch228: kvm-block-mirror-Drop-mirror_wait_for_any_operation.patch
+# For bz#2125119 - Mirror job with "copy-mode":"write-blocking" that used for storage migration can't converge under heavy I/O
+Patch229: kvm-block-mirror-Fix-NULL-s-job-in-active-writes.patch
+# For bz#2161188 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch230: kvm-accel-introduce-accelerator-blocker-API.patch
+# For bz#2161188 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch231: kvm-KVM-keep-track-of-running-ioctls.patch
+# For bz#2161188 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch232: kvm-kvm-Atomic-memslot-updates.patch
+# For bz#2074205 - while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set
+Patch233: kvm-migration-Read-state-once.patch
+# For bz#2163713 - [s390x] VM fails to start with ISM passed through
+Patch234: kvm-s390x-pci-RPCIT-second-pass-when-mappings-exhausted.patch
+# For bz#2163713 - [s390x] VM fails to start with ISM passed through
+Patch235: kvm-s390x-pci-coalesce-unmap-operations.patch
+# For bz#2163713 - [s390x] VM fails to start with ISM passed through
+Patch236: kvm-s390x-pci-shrink-DMA-aperture-to-be-bound-by-vfio-DM.patch
+# For bz#2163713 - [s390x] VM fails to start with ISM passed through
+Patch237: kvm-s390x-pci-reset-ISM-passthrough-devices-on-shutdown-.patch
+# For bz#2147617 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch238: kvm-qcow2-Fix-theoretical-corruption-in-store_bitmap-err.patch
+# For bz#2147617 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch239: kvm-qemu-img-commit-Report-errors-while-closing-the-imag.patch
+# For bz#2147617 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch240: kvm-qemu-img-bitmap-Report-errors-while-closing-the-imag.patch
+# For bz#2147617 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch241: kvm-qemu-iotests-Test-qemu-img-bitmap-commit-exit-code-o.patch
+# For bz#2137740 - Multifd migration fails under a weak network/socket ordering race
+Patch242: kvm-io-Add-support-for-MSG_PEEK-for-socket-channel.patch
+# For bz#2137740 - Multifd migration fails under a weak network/socket ordering race
+Patch243: kvm-migration-check-magic-value-for-deciding-the-mapping.patch
+# For bz#2168187 - [s390x] qemu-kvm coredumps when SE crashes
+Patch244: kvm-target-s390x-arch_dump-Fix-memory-corruption-in-s390.patch
 
 BuildRequires: wget
 BuildRequires: rpm-build
@@ -1596,6 +1795,147 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 
 
 %changelog
+* Wed Feb 15 2023 Jon Maloy <jmaloy@redhat.com> - 6.2.0-31
+- kvm-io-Add-support-for-MSG_PEEK-for-socket-channel.patch [bz#2137740]
+- kvm-migration-check-magic-value-for-deciding-the-mapping.patch [bz#2137740]
+- kvm-target-s390x-arch_dump-Fix-memory-corruption-in-s390.patch [bz#2168187]
+- Resolves: bz#2137740
+  (Multifd migration fails under a weak network/socket ordering race)
+- Resolves: bz#2168187
+  ([s390x] qemu-kvm coredumps when SE crashes)
+
+* Mon Feb 13 2023 Jon Maloy <jmaloy@redhat.com> - 6.2.0-30
+- kvm-qcow2-Fix-theoretical-corruption-in-store_bitmap-err.patch [bz#2147617]
+- kvm-qemu-img-commit-Report-errors-while-closing-the-imag.patch [bz#2147617]
+- kvm-qemu-img-bitmap-Report-errors-while-closing-the-imag.patch [bz#2147617]
+- kvm-qemu-iotests-Test-qemu-img-bitmap-commit-exit-code-o.patch [bz#2147617]
+- Resolves: bz#2147617
+  (qemu-img finishes successfully while having errors in commit or bitmaps operations)
+
+* Fri Jan 27 2023 Jon Maloy <jmaloy@redhat.com> - 6.2.0-29
+- kvm-block-mirror-Do-not-wait-for-active-writes.patch [bz#2125119]
+- kvm-block-mirror-Drop-mirror_wait_for_any_operation.patch [bz#2125119]
+- kvm-block-mirror-Fix-NULL-s-job-in-active-writes.patch [bz#2125119]
+- kvm-accel-introduce-accelerator-blocker-API.patch [bz#2161188]
+- kvm-KVM-keep-track-of-running-ioctls.patch [bz#2161188]
+- kvm-kvm-Atomic-memslot-updates.patch [bz#2161188]
+- kvm-migration-Read-state-once.patch [bz#2074205]
+- kvm-s390x-pci-RPCIT-second-pass-when-mappings-exhausted.patch [bz#2163713]
+- kvm-s390x-pci-coalesce-unmap-operations.patch [bz#2163713]
+- kvm-s390x-pci-shrink-DMA-aperture-to-be-bound-by-vfio-DM.patch [bz#2163713]
+- kvm-s390x-pci-reset-ISM-passthrough-devices-on-shutdown-.patch [bz#2163713]
+- Resolves: bz#2125119
+  (Mirror job with "copy-mode":"write-blocking" that used for storage migration can't converge under heavy I/O)
+- Resolves: bz#2161188
+  (SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on)
+- Resolves: bz#2074205
+  (while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set)
+- Resolves: bz#2163713
+  ([s390x] VM fails to start with ISM passed through)
+
+* Wed Jan 04 2023 Jon Maloy <jmaloy@redhat.com> - 6.2.0-28
+- kvm-s390x-tod-kvm-don-t-save-restore-the-TOD-in-PV-guest.patch [bz#2155448]
+- Resolves: bz#2155448
+  (RHEL8.8 - KVM: s390: pv: don't allow userspace to set the clock under PV - QEMU part)
+
+* Thu Dec 08 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-27
+- kvm-hw-display-qxl-Have-qxl_log_command-Return-early-if-.patch [bz#2148545]
+- kvm-hw-display-qxl-Document-qxl_phys2virt.patch [bz#2148545]
+- kvm-hw-display-qxl-Pass-requested-buffer-size-to-qxl_phy.patch [bz#2148545]
+- kvm-hw-display-qxl-Avoid-buffer-overrun-in-qxl_phys2virt.patch [bz#2148545]
+- kvm-hw-display-qxl-Assert-memory-slot-fits-in-preallocat.patch [bz#2148545]
+- Resolves: bz#2148545
+  (CVE-2022-4144 virt:rhel/qemu-kvm: QEMU: QXL: qxl_phys2virt unsafe address translation can lead to out-of-bounds read [rhel-8])
+
+* Wed Nov 23 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-26
+- kvm-docs-system-s390x-Document-the-loadparm-machine-prop.patch [bz#2128225]
+- kvm-s390x-Register-TYPE_S390_CCW_MACHINE-properties-as-c.patch [bz#2128225]
+- kvm-ui-vnc.c-Fixed-a-deadlock-bug.patch [bz#2141896]
+- Resolves: bz#2128225
+  ([s390x] [RHEL8][s390x-ccw bios] lacking document about parameter loadparm in qemu)
+- Resolves: bz#2141896
+  (VMs hung on vnc_clipboard_send)
+
+* Wed Nov 16 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-25
+- kvm-hw-acpi-Add-ospm_status-hook-implementation-for-acpi.patch [bz#2132609]
+- kvm-target-arm-kvm-Retry-KVM_CREATE_VM-call-if-it-fails-.patch [bz#2132609]
+- Resolves: bz#2132609
+  (qemu-kvm: backport some aarch64 fixes)
+
+* Thu Nov 10 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-24
+- kvm-s390x-pci-use-a-reserved-ID-for-the-default-PCI-grou.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-don-t-use-hard-coded-dma-range-in-reg_ioat.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-use-the-passthrough-measurement-update-int.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-add-supported-DT-information-to-clp-respon.patch [bz#1664378 bz#2043909]
+- kvm-Update-linux-headers-to-v6.0-rc4.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-add-routine-to-get-host-function-handle-fr.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-enable-for-load-store-interpretation.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-don-t-fence-interpreted-devices-without-MS.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-enable-adapter-event-notification-for-inte.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-let-intercept-devices-have-separate-PCI-gr.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pci-reflect-proper-maxstbl-for-groups-of-inter.patch [bz#1664378 bz#2043909]
+- kvm-s390x-s390-virtio-ccw-Switch-off-zPCI-enhancements-o.patch [bz#1664378 bz#2043909]
+- kvm-dump-Use-ERRP_GUARD.patch [bz#1664378 bz#2043909]
+- kvm-dump-Remove-the-sh_info-variable.patch [bz#1664378 bz#2043909]
+- kvm-dump-Introduce-shdr_num-to-decrease-complexity.patch [bz#1664378 bz#2043909]
+- kvm-dump-Remove-the-section-if-when-calculating-the-memo.patch [bz#1664378 bz#2043909]
+- kvm-dump-Add-more-offset-variables.patch [bz#1664378 bz#2043909]
+- kvm-dump-Introduce-dump_is_64bit-helper-function.patch [bz#1664378 bz#2043909]
+- kvm-dump-Consolidate-phdr-note-writes.patch [bz#1664378 bz#2043909]
+- kvm-dump-Cleanup-dump_begin-write-functions.patch [bz#1664378 bz#2043909]
+- kvm-dump-Consolidate-elf-note-function.patch [bz#1664378 bz#2043909]
+- kvm-dump-Replace-opaque-DumpState-pointer-with-a-typed-o.patch [bz#1664378 bz#2043909]
+- kvm-dump-Rename-write_elf_loads-to-write_elf_phdr_loads.patch [bz#1664378 bz#2043909]
+- kvm-dump-Refactor-dump_iterate-and-introduce-dump_filter.patch [bz#1664378 bz#2043909]
+- kvm-dump-Rework-get_start_block.patch [bz#1664378 bz#2043909]
+- kvm-dump-Rework-filter-area-variables.patch [bz#1664378 bz#2043909]
+- kvm-dump-Rework-dump_calculate_size-function.patch [bz#1664378 bz#2043909]
+- kvm-dump-Split-elf-header-functions-into-prepare-and-wri.patch [bz#1664378 bz#2043909]
+- kvm-dump-Rename-write_elf-_phdr_note-to-prepare_elf-_phd.patch [bz#1664378 bz#2043909]
+- kvm-dump-simplify-a-bit-kdump-get_next_page.patch [bz#1664378 bz#2043909]
+- kvm-dump-fix-kdump-to-work-over-non-aligned-blocks.patch [bz#1664378 bz#2043909]
+- kvm-dump-Use-a-buffer-for-ELF-section-data-and-headers.patch [bz#1664378 bz#2043909]
+- kvm-dump-Write-ELF-section-headers-right-after-ELF-heade.patch [bz#1664378 bz#2043909]
+- kvm-dump-Reorder-struct-DumpState.patch [bz#1664378 bz#2043909]
+- kvm-dump-Reintroduce-memory_offset-and-section_offset.patch [bz#1664378 bz#2043909]
+- kvm-dump-Add-architecture-section-and-section-string-tab.patch [bz#1664378 bz#2043909]
+- kvm-s390x-Add-protected-dump-cap.patch [bz#1664378 bz#2043909]
+- kvm-s390x-Introduce-PV-query-interface.patch [bz#1664378 bz#2043909]
+- kvm-include-elf.h-add-s390x-note-types.patch [bz#1664378 bz#2043909]
+- kvm-s390x-Add-KVM-PV-dump-interface.patch [bz#1664378 bz#2043909]
+- kvm-s390x-pv-Add-dump-support.patch [bz#1664378 bz#2043909]
+- kvm-ui-vnc-clipboard-fix-integer-underflow-in-vnc_client.patch [bz#2129760]
+- Resolves: bz#1664378
+  ([IBM 8.8 FEAT] Enhanced Interpretation for PCI Functions (kvm) - qemu part)
+- Resolves: bz#2043909
+  ([IBM 8.8 FEAT] KVM: Secure Execution guest dump encryption with customer keys - qemu part)
+- Resolves: bz#2129760
+  (CVE-2022-3165 virt:rhel/qemu-kvm: QEMU: VNC: integer underflow in vnc_client_cut_text_ext leads to CPU exhaustion [rhel-8])
+
+* Wed Oct 26 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-23
+- kvm-virtio-fix-the-condition-for-iommu_platform-not-supp.patch [bz#2116302]
+- kvm-virtio-fix-feature-negotiation-for-ACCESS_PLATFORM.patch [bz#2116302]
+- Resolves: bz#2116302
+  (RHEL8.6 - virtiofs will not mount fs on secure execution guest)
+
+* Wed Oct 05 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-22
+- kvm-redhat-Update-linux-headers-linux-kvm.h-to-v5.18-rc6.patch [bz#2124757]
+- kvm-target-s390x-kvm-Honor-storage-keys-during-emulation.patch [bz#2124757]
+- kvm-virtiofsd-use-g_date_time_get_microsecond-to-get-sub.patch [bz#2018885]
+- Resolves: bz#2124757
+  (RHEL8: skey test in kvm_unit_test got failed)
+- Resolves: bz#2018885
+  ([virtiofs] virtiofsd debug log's timestamp is NULL)
+
+* Thu Sep 29 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-21
+- kvm-backends-hostmem-Fix-support-of-memory-backend-memfd.patch [bz#2117149]
+- kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch [bz#2125271]
+- kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch [bz#2125271]
+- Resolves: bz#2117149
+  (Can't run when memory backing with hugepages and backend type memfd)
+- Resolves: bz#2125271
+  ([RHEL8.7] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command [rhel-8.8.0])
+
 * Fri Aug 26 2022 Jon Maloy <jmaloy@redhat.com> - 6.2.0-20
 - kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch [bz#2120279]
 - Resolves: bz#2120279
