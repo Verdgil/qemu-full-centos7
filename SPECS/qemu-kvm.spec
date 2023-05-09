@@ -1,7 +1,7 @@
 %global libfdt_version 1.6.0
 %global libseccomp_version 2.4.0
 %global libusbx_version 1.0.23
-%global meson_version 0.58.2
+%global meson_version 0.61.3
 %global usbredir_version 0.7.1
 %global ipxe_version 20200823-5.git4bd064de
 
@@ -113,16 +113,13 @@ Requires: %{name}-ui-opengl = %{epoch}:%{version}-%{release}     \
 Requires: %{name}-ui-egl-headless = %{epoch}:%{version}-%{release}     \
 %endif                                                           \
 Requires: %{name}-device-display-virtio-gpu = %{epoch}:%{version}-%{release}   \
-Requires: %{name}-device-display-virtio-gpu-gl = %{epoch}:%{version}-%{release}   \
 %ifarch s390x                                                    \
 Requires: %{name}-device-display-virtio-gpu-ccw = %{epoch}:%{version}-%{release}   \
 %else                                                            \
 Requires: %{name}-device-display-virtio-gpu-pci = %{epoch}:%{version}-%{release}   \
-Requires: %{name}-device-display-virtio-gpu-pci-gl = %{epoch}:%{version}-%{release}   \
 %endif                                                           \
 %ifarch x86_64 %{power64}                                        \
 Requires: %{name}-device-display-virtio-vga = %{epoch}:%{version}-%{release}   \
-Requires: %{name}-device-display-virtio-vga-gl = %{epoch}:%{version}-%{release}   \
 %endif                                                           \
 Requires: %{name}-device-usb-host = %{epoch}:%{version}-%{release}   \
 %if %{have_usbredir}                                             \
@@ -150,8 +147,8 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
-Version: 7.0.0
-Release: 13%{?rcrel}%{?dist}%{?cc_suffix}.2
+Version: 7.2.0
+Release: 14%{?rcrel}%{?dist}%{?cc_suffix}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -186,320 +183,239 @@ Patch0010: 0010-Add-x86_64-machine-types.patch
 Patch0011: 0011-Enable-make-check.patch
 Patch0012: 0012-vfio-cap-number-of-devices-that-can-be-assigned.patch
 Patch0013: 0013-Add-support-statement-to-help-output.patch
-Patch0014: 0014-globally-limit-the-maximum-number-of-CPUs.patch
-Patch0015: 0015-Use-qemu-kvm-in-documentation-instead-of-qemu-system.patch
-Patch0016: 0016-virtio-scsi-Reject-scsi-cd-if-data-plane-enabled-RHE.patch
-Patch0017: 0017-BZ1653590-Require-at-least-64kiB-pages-for-downstrea.patch
-Patch0018: 0018-qcow2-Deprecation-warning-when-opening-v2-images-rw.patch
-Patch0019: 0019-WRB-Introduce-RHEL-9.0.0-hw-compat-structure.patch
-Patch0020: 0020-redhat-Update-s390x-machine-type-compatibility-for-r.patch
-Patch0021: 0021-pc-Move-s3-s4-suspend-disabling-to-compat.patch
-# For bz#2044162 - [RHEL9.1] Enable virtio-mem as tech-preview on ARM64 QEMU
-Patch22: kvm-configs-devices-aarch64-softmmu-Enable-CONFIG_VIRTIO.patch
-# For bz#2081022 - Build regression on ppc64le with c9s qemu-kvm 7.0.0-1 changes
-Patch23: kvm-target-ppc-cpu-models-Fix-ppc_cpu_aliases-list-for-R.patch
-# For bz#2046029 - [WRB] New machine type property - dtb-kaslr-seed
-Patch24: kvm-hw-arm-virt-Remove-the-dtb-kaslr-seed-machine-option.patch
-# For bz#2046029 - [WRB] New machine type property - dtb-kaslr-seed
-Patch25: kvm-hw-arm-virt-Fix-missing-initialization-in-instance-c.patch
-# For bz#1477099 - virtio-iommu (including ACPI, VHOST/VFIO integration, migration support)
-Patch26: kvm-Enable-virtio-iommu-pci-on-aarch64.patch
-# For bz#2037612 - [Win11][tpm][QL41112 PF]  vfio_listener_region_add received unaligned region
-Patch27: kvm-sysemu-tpm-Add-a-stub-function-for-TPM_IS_CRB.patch
-# For bz#2037612 - [Win11][tpm][QL41112 PF]  vfio_listener_region_add received unaligned region
-Patch28: kvm-vfio-common-remove-spurious-tpm-crb-cmd-misalignment.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch29: kvm-qapi-machine.json-Add-cluster-id.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch30: kvm-qtest-numa-test-Specify-CPU-topology-in-aarch64_numa.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch31: kvm-hw-arm-virt-Consider-SMP-configuration-in-CPU-topolo.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch32: kvm-qtest-numa-test-Correct-CPU-and-NUMA-association-in-.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch33: kvm-hw-arm-virt-Fix-CPU-s-default-NUMA-node-ID.patch
-# For bz#2041823 - [aarch64][numa] When there are at least 6 Numa nodes serial log shows 'arch topology borken'
-Patch34: kvm-hw-acpi-aml-build-Use-existing-CPU-topology-to-build.patch
-# For bz#2079938 - qemu coredump when boot with multi disks (qemu) failed to set up stack guard page: Cannot allocate memory
-Patch35: kvm-coroutine-Rename-qemu_coroutine_inc-dec_pool_size.patch
-# For bz#2079938 - qemu coredump when boot with multi disks (qemu) failed to set up stack guard page: Cannot allocate memory
-Patch36: kvm-coroutine-Revert-to-constant-batch-size.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch37: kvm-virtio-scsi-fix-ctrl-and-event-handler-functions-in-.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch38: kvm-virtio-scsi-don-t-waste-CPU-polling-the-event-virtqu.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch39: kvm-virtio-scsi-clean-up-virtio_scsi_handle_event_vq.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch40: kvm-virtio-scsi-clean-up-virtio_scsi_handle_ctrl_vq.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch41: kvm-virtio-scsi-clean-up-virtio_scsi_handle_cmd_vq.patch
-# For bz#2079347 - Guest boot blocked when scsi disks using same iothread and 100% CPU consumption
-Patch42: kvm-virtio-scsi-move-request-related-items-from-.h-to-.c.patch
-# For bz#1995710 - RFE: Allow virtio-scsi CD-ROM media change with IOThreads
-Patch43: kvm-Revert-virtio-scsi-Reject-scsi-cd-if-data-plane-enab.patch
-# For bz#2064530 - Rebuild qemu-kvm with clang-14
-Patch44: kvm-migration-Fix-operator-type.patch
-# For bz#1708300 - RFE: qemu-nbd vs NBD_FLAG_CAN_MULTI_CONN
-Patch45: kvm-qemu-nbd-Pass-max-connections-to-blockdev-layer.patch
-# For bz#1708300 - RFE: qemu-nbd vs NBD_FLAG_CAN_MULTI_CONN
-Patch46: kvm-nbd-server-Allow-MULTI_CONN-for-shared-writable-expo.patch
-# For bz#2031024 - Add support for fixing thread pool size [QEMU]
-Patch47: kvm-Introduce-event-loop-base-abstract-class.patch
-# For bz#2031024 - Add support for fixing thread pool size [QEMU]
-Patch48: kvm-util-main-loop-Introduce-the-main-loop-into-QOM.patch
-# For bz#2031024 - Add support for fixing thread pool size [QEMU]
-Patch49: kvm-util-event-loop-base-Introduce-options-to-set-the-th.patch
-# For bz#2072379 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
-Patch50: kvm-qcow2-Improve-refcount-structure-rebuilding.patch
-# For bz#2072379 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
-Patch51: kvm-iotests-108-Test-new-refcount-rebuild-algorithm.patch
-# For bz#2072379 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
-Patch52: kvm-qcow2-Add-errp-to-rebuild_refcount_structure.patch
-# For bz#2072379 - Fail to rebuild the reference count tables of qcow2 image on host block devices (e.g. LVs)
-Patch53: kvm-iotests-108-Fix-when-missing-user_allow_other.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch54: kvm-virtio-net-setup-vhost_dev-and-notifiers-for-cvq-onl.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch55: kvm-virtio-net-align-ctrl_vq-index-for-non-mq-guest-for-.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch56: kvm-vhost-vdpa-fix-improper-cleanup-in-net_init_vhost_vd.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch57: kvm-vhost-net-fix-improper-cleanup-in-vhost_net_start.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch58: kvm-vhost-vdpa-backend-feature-should-set-only-once.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch59: kvm-vhost-vdpa-change-name-and-polarity-for-vhost_vdpa_o.patch
-# For bz#2070804 - PXE boot crash qemu when using multiqueue vDPA
-Patch60: kvm-virtio-net-don-t-handle-mq-request-in-userspace-hand.patch
-# For bz#2094270 - Do not set the hard vCPU limit to the soft vCPU limit in downstream qemu-kvm anymore
-Patch61: kvm-Revert-globally-limit-the-maximum-number-of-CPUs.patch
-# For bz#2086262 - [Win11][tpm]vfio_listener_region_del received unaligned region
-Patch62: kvm-vfio-common-remove-spurious-warning-on-vfio_listener.patch
-# For bz#1952483 - RFE: QEMU's coroutines fail with CFLAGS=-flto on non-x86_64 architectures
-Patch63: kvm-coroutine-ucontext-use-QEMU_DEFINE_STATIC_CO_TLS.patch
-# For bz#1952483 - RFE: QEMU's coroutines fail with CFLAGS=-flto on non-x86_64 architectures
-Patch64: kvm-coroutine-use-QEMU_DEFINE_STATIC_CO_TLS.patch
-# For bz#1952483 - RFE: QEMU's coroutines fail with CFLAGS=-flto on non-x86_64 architectures
-Patch65: kvm-coroutine-win32-use-QEMU_DEFINE_STATIC_CO_TLS.patch
-# For bz#2094252 - Compile the virtio-iommu device on x86_64
-Patch66: kvm-Enable-virtio-iommu-pci-on-x86_64.patch
-# For bz#2092788 - Stalled IO Operations in VM
-Patch67: kvm-linux-aio-fix-unbalanced-plugged-counter-in-laio_io_.patch
-# For bz#2092788 - Stalled IO Operations in VM
-Patch68: kvm-linux-aio-explain-why-max-batch-is-checked-in-laio_i.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch69: kvm-tests-avocado-update-aarch64_virt-test-to-exercise-c.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch70: kvm-RHEL-only-tests-avocado-Switch-aarch64-tests-from-a5.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch71: kvm-RHEL-only-AArch64-Drop-unsupported-CPU-types.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch72: kvm-target-i386-deprecate-CPUs-older-than-x86_64-v2-ABI.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch73: kvm-target-s390x-deprecate-CPUs-older-than-z14.patch
-# For bz#2060839 - Consider deprecating CPU models like "kvm64" / "qemu64" on RHEL 9
-Patch74: kvm-target-arm-deprecate-named-CPU-models.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch75: kvm-meson.build-Fix-docker-test-build-alpine-when-includ.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch76: kvm-QIOChannel-Add-flags-on-io_writev-and-introduce-io_f.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch77: kvm-QIOChannelSocket-Implement-io_writev-zero-copy-flag-.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch78: kvm-migration-Add-zero-copy-send-parameter-for-QMP-HMP-f.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch79: kvm-migration-Add-migrate_use_tls-helper.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch80: kvm-multifd-multifd_send_sync_main-now-returns-negative-.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch81: kvm-multifd-Send-header-packet-without-flags-if-zero-cop.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch82: kvm-multifd-Implement-zero-copy-write-in-multifd-migrati.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch83: kvm-QIOChannelSocket-Introduce-assert-and-reduce-ifdefs-.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch84: kvm-QIOChannelSocket-Fix-zero-copy-send-so-socket-flush-.patch
-# For bz#1968509 - Use MSG_ZEROCOPY on QEMU Live Migration
-Patch85: kvm-migration-Change-zero_copy_send-from-migration-param.patch
-# For bz#2096143 - The migration port is not released if use it again for recovering postcopy migration
-Patch86: kvm-migration-Allow-migrate-recover-to-run-multiple-time.patch
-# For bz#2100106 - Fix virtio-iommu/vfio bypass
-Patch87: kvm-virtio-iommu-Add-bypass-mode-support-to-assigned-dev.patch
-# For bz#2100106 - Fix virtio-iommu/vfio bypass
-Patch88: kvm-virtio-iommu-Use-recursive-lock-to-avoid-deadlock.patch
-# For bz#2100106 - Fix virtio-iommu/vfio bypass
-Patch89: kvm-virtio-iommu-Add-an-assert-check-in-translate-routin.patch
-# For bz#2100106 - Fix virtio-iommu/vfio bypass
-Patch90: kvm-virtio-iommu-Fix-the-partial-copy-of-probe-request.patch
-# For bz#2100106 - Fix virtio-iommu/vfio bypass
-Patch91: kvm-virtio-iommu-Fix-migration-regression.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch92: kvm-pc-bios-s390-ccw-virtio-Introduce-a-macro-for-the-DA.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch93: kvm-pc-bios-s390-ccw-bootmap-Improve-the-guessing-logic-.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch94: kvm-pc-bios-s390-ccw-virtio-blkdev-Simplify-fix-virtio_i.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch95: kvm-pc-bios-s390-ccw-virtio-blkdev-Remove-virtio_assume_.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch96: kvm-pc-bios-s390-ccw-virtio-Set-missing-status-bits-whil.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch97: kvm-pc-bios-s390-ccw-virtio-Read-device-config-after-fea.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch98: kvm-pc-bios-s390-ccw-virtio-Beautify-the-code-for-readin.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch99: kvm-pc-bios-s390-ccw-Split-virtio-scsi-code-from-virtio_.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch100: kvm-pc-bios-s390-ccw-virtio-blkdev-Request-the-right-fea.patch
-# For bz#2098077 - virtio-blk: Can't boot fresh installation from used virtio-blk dasd disk under certain conditions
-Patch101: kvm-pc-bios-s390-ccw-netboot.mak-Ignore-Clang-s-warnings.patch
-# For bz#1951522 - CVE-2021-3507 qemu-kvm: QEMU: fdc: heap buffer overflow in DMA read data transfers [rhel-9.0]
-Patch102: kvm-hw-block-fdc-Prevent-end-of-track-overrun-CVE-2021-3.patch
-# For bz#1951522 - CVE-2021-3507 qemu-kvm: QEMU: fdc: heap buffer overflow in DMA read data transfers [rhel-9.0]
-Patch103: kvm-tests-qtest-fdc-test-Add-a-regression-test-for-CVE-2.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch104: kvm-vhost-Track-descriptor-chain-in-private-at-SVQ.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch105: kvm-vhost-Fix-device-s-used-descriptor-dequeue.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch106: kvm-hw-virtio-Replace-g_memdup-by-g_memdup2.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch107: kvm-vhost-Fix-element-in-vhost_svq_add-failure.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch108: kvm-meson-create-have_vhost_-variables.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch109: kvm-meson-use-have_vhost_-variables-to-pick-sources.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch110: kvm-vhost-move-descriptor-translation-to-vhost_svq_vring.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch111: kvm-virtio-net-Expose-MAC_TABLE_ENTRIES.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch112: kvm-virtio-net-Expose-ctrl-virtqueue-logic.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch113: kvm-vdpa-Avoid-compiler-to-squash-reads-to-used-idx.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch114: kvm-vhost-Reorder-vhost_svq_kick.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch115: kvm-vhost-Move-vhost_svq_kick-call-to-vhost_svq_add.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch116: kvm-vhost-Check-for-queue-full-at-vhost_svq_add.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch117: kvm-vhost-Decouple-vhost_svq_add-from-VirtQueueElement.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch118: kvm-vhost-Add-SVQDescState.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch119: kvm-vhost-Track-number-of-descs-in-SVQDescState.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch120: kvm-vhost-add-vhost_svq_push_elem.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch121: kvm-vhost-Expose-vhost_svq_add.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch122: kvm-vhost-add-vhost_svq_poll.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch123: kvm-vhost-Add-svq-avail_handler-callback.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch124: kvm-vdpa-Export-vhost_vdpa_dma_map-and-unmap-calls.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch125: kvm-vhost-net-vdpa-add-stubs-for-when-no-virtio-net-devi.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch126: kvm-vdpa-manual-forward-CVQ-buffers.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch127: kvm-vdpa-Buffer-CVQ-support-on-shadow-virtqueue.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch128: kvm-vdpa-Extract-get-features-part-from-vhost_vdpa_get_m.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch129: kvm-vdpa-Add-device-migration-blocker.patch
-# For bz#1939363 - vDPA control virtqueue support in Qemu
-Patch130: kvm-vdpa-Add-x-svq-to-NetdevVhostVDPAOptions.patch
-# For bz#2111994 - RHEL9: skey test in kvm_unit_test got failed
-Patch131: kvm-redhat-Update-linux-headers-linux-kvm.h-to-v5.18-rc6.patch
-# For bz#2111994 - RHEL9: skey test in kvm_unit_test got failed
-Patch132: kvm-target-s390x-kvm-Honor-storage-keys-during-emulation.patch
-# For bz#2095608 - Please correct the error message when try to start qemu with "-M kernel-irqchip=split"
-Patch133: kvm-kvm-don-t-use-perror-without-useful-errno.patch
-# For bz#2099934 - Guest reboot on destination host after postcopy migration completed
-Patch134: kvm-multifd-Copy-pages-before-compressing-them-with-zlib.patch
-# For bz#2099934 - Guest reboot on destination host after postcopy migration completed
-Patch135: kvm-Revert-migration-Simplify-unqueue_page.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch136: kvm-QIOChannelSocket-Fix-zero-copy-flush-returning-code-.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch137: kvm-Add-dirty-sync-missed-zero-copy-migration-stat.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch138: kvm-migration-multifd-Report-to-user-when-zerocopy-not-w.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch139: kvm-migration-Avoid-false-positive-on-non-supported-scen.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch140: kvm-migration-add-remaining-params-has_-true-in-migratio.patch
-# For bz#2107466 - zerocopy capability can be enabled when set migrate capabilities with multifd and compress/xbzrle together
-Patch141: kvm-QIOChannelSocket-Add-support-for-MSG_ZEROCOPY-IPV6.patch
-# For bz#2112303 - virtio-blk: Can't boot fresh installation from used 512 cluster_size image under certain conditions
-Patch142: kvm-pc-bios-s390-ccw-Fix-booting-with-logical-block-size.patch
-# For bz#2116876 - Fixes for vDPA control virtqueue support in Qemu
-Patch143: kvm-vdpa-Fix-bad-index-calculus-at-vhost_vdpa_get_vring_.patch
-# For bz#2116876 - Fixes for vDPA control virtqueue support in Qemu
-Patch144: kvm-vdpa-Fix-index-calculus-at-vhost_vdpa_svqs_start.patch
-# For bz#2116876 - Fixes for vDPA control virtqueue support in Qemu
-Patch145: kvm-vdpa-Fix-memory-listener-deletions-of-iova-tree.patch
-# For bz#2116876 - Fixes for vDPA control virtqueue support in Qemu
-Patch146: kvm-vdpa-Fix-file-descriptor-leak-on-get-features-error.patch
-# For bz#2120275 - Wrong max_sectors_kb and Maximum transfer length on the pass-through device [rhel-9.1]
-Patch147: kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch148: kvm-vhost-Get-vring-base-from-vq-not-svq.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch149: kvm-vdpa-Skip-the-maps-not-in-the-iova-tree.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch150: kvm-vdpa-do-not-save-failed-dma-maps-in-SVQ-iova-tree.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch151: kvm-util-Return-void-on-iova_tree_remove.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch152: kvm-util-accept-iova_tree_remove_parameter-by-value.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch153: kvm-vdpa-Remove-SVQ-vring-from-iova_tree-at-shutdown.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch154: kvm-vdpa-Make-SVQ-vring-unmapping-return-void.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch155: kvm-vhost-Always-store-new-kick-fd-on-vhost_svq_set_svq_.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch156: kvm-vdpa-Use-ring-hwaddr-at-vhost_vdpa_svq_unmap_ring.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch157: kvm-vhost-stop-transfer-elem-ownership-in-vhost_handle_g.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch158: kvm-vhost-use-SVQ-element-ndescs-instead-of-opaque-data-.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch159: kvm-vhost-Delete-useless-read-memory-barrier.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch160: kvm-vhost-Do-not-depend-on-NULL-VirtQueueElement-on-vhos.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch161: kvm-vhost_net-Add-NetClientInfo-start-callback.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch162: kvm-vhost_net-Add-NetClientInfo-stop-callback.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch163: kvm-vdpa-add-net_vhost_vdpa_cvq_info-NetClientInfo.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch164: kvm-vdpa-Move-command-buffers-map-to-start-of-net-device.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch165: kvm-vdpa-extract-vhost_vdpa_net_cvq_add-from-vhost_vdpa_.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch166: kvm-vhost_net-add-NetClientState-load-callback.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch167: kvm-vdpa-Add-virtio-net-mac-address-via-CVQ-at-start.patch
-# For bz#2114060 - vDPA state restore support through control virtqueue in Qemu
-Patch168: kvm-vdpa-Delete-CVQ-migration-blocker.patch
-# For bz#2099541 - qemu coredump with error Assertion `qemu_mutex_iothread_locked()' failed when repeatly hotplug/unplug disks in pause status
-Patch169: kvm-virtio-scsi-fix-race-in-virtio_scsi_dataplane_start.patch
-# For bz#2117546 - [RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command
-Patch170: kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch
-# For bz#2117546 - [RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command
-Patch171: kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch
-# For bz#2134896 - Windows guest reboot after migration with wsl2 installed inside [rhel-9.1.0.z]
-Patch172: kvm-target-i386-kvm-fix-kvmclock_current_nsec-Assertion-.patch
-# For bz#2168221 - while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set [rhel-9.1.0.z]
-Patch173: kvm-migration-Read-state-once.patch
-
-# Source-git patches
+Patch0014: 0014-Use-qemu-kvm-in-documentation-instead-of-qemu-system.patch
+Patch0015: 0015-BZ1653590-Require-at-least-64kiB-pages-for-downstrea.patch
+Patch0016: 0016-qcow2-Deprecation-warning-when-opening-v2-images-rw.patch
+Patch0018: 0018-Addd-7.2-compat-bits-for-RHEL-9.1-machine-type.patch
+Patch0019: 0019-redhat-Update-s390x-machine-type-compatibility-for-Q.patch
+Patch0020: 0020-redhat-aarch64-add-rhel9.2.0-virt-machine-type.patch
+Patch0021: 0021-redhat-Add-new-rhel-9.2.0-s390x-machine-type.patch
+Patch0022: 0022-x86-rhel-9.2.0-machine-type.patch
+Patch23: kvm-redhat-fix-virt-rhel9.2.0-compat-props.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch24: kvm-hw-arm-virt-Introduce-virt_set_high_memmap-helper.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch25: kvm-hw-arm-virt-Rename-variable-size-to-region_size-in-v.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch26: kvm-hw-arm-virt-Introduce-variable-region_base-in-virt_s.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch27: kvm-hw-arm-virt-Introduce-virt_get_high_memmap_enabled-h.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch28: kvm-hw-arm-virt-Improve-high-memory-region-address-assig.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch29: kvm-hw-arm-virt-Add-compact-highmem-property.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch30: kvm-hw-arm-virt-Add-properties-to-disable-high-memory-re.patch
+# For bz#2113840 - [RHEL9.2] Memory mapping optimization for virt machine
+Patch31: kvm-hw-arm-virt-Enable-compat-high-memory-region-address.patch
+# For bz#2155749 - [regression][stable guest abi][qemu-kvm7.2]Migration failed due to virtio-rng device between RHEL8.8 and RHEL9.2/MSI-X
+Patch32: kvm-virtio-rng-pci-fix-migration-compat-for-vectors.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch33: kvm-virtio-introduce-macro-VIRTIO_CONFIG_IRQ_IDX.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch34: kvm-virtio-pci-decouple-notifier-from-interrupt-process.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch35: kvm-virtio-pci-decouple-the-single-vector-from-the-inter.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch36: kvm-vhost-introduce-new-VhostOps-vhost_set_config_call.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch37: kvm-vhost-vdpa-add-support-for-config-interrupt.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch38: kvm-virtio-add-support-for-configure-interrupt.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch39: kvm-vhost-add-support-for-configure-interrupt.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch40: kvm-virtio-net-add-support-for-configure-interrupt.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch41: kvm-virtio-mmio-add-support-for-configure-interrupt.patch
+# For bz#1905805 - support config interrupt in vhost-vdpa qemu
+Patch42: kvm-virtio-pci-add-support-for-configure-interrupt.patch
+# For bz#2159408 - [s390x] VMs with ISM passthrough don't autostart after leapp upgrade from RHEL 8
+Patch43: kvm-s390x-s390-virtio-ccw-Activate-zPCI-features-on-s390.patch
+# For bz#2124856 - VM with virtio interface and iommu=on will crash when try to migrate
+Patch44: kvm-vhost-fix-vq-dirty-bitmap-syncing-when-vIOMMU-is-ena.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch45: kvm-block-drop-bdrv_remove_filter_or_cow_child.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch46: kvm-qed-Don-t-yield-in-bdrv_qed_co_drain_begin.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch47: kvm-test-bdrv-drain-Don-t-yield-in-.bdrv_co_drained_begi.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch48: kvm-block-Revert-.bdrv_drained_begin-end-to-non-coroutin.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch49: kvm-block-Remove-drained_end_counter.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch50: kvm-block-Inline-bdrv_drain_invoke.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch51: kvm-block-Fix-locking-for-bdrv_reopen_queue_child.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch52: kvm-block-Drain-individual-nodes-during-reopen.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch53: kvm-block-Don-t-use-subtree-drains-in-bdrv_drop_intermed.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch54: kvm-stream-Replace-subtree-drain-with-a-single-node-drai.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch55: kvm-block-Remove-subtree-drains.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch56: kvm-block-Call-drain-callbacks-only-once.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch57: kvm-block-Remove-ignore_bds_parents-parameter-from-drain.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch58: kvm-block-Drop-out-of-coroutine-in-bdrv_do_drained_begin.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch59: kvm-block-Don-t-poll-in-bdrv_replace_child_noperm.patch
+# For bz#2155112 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch60: kvm-block-Remove-poll-parameter-from-bdrv_parent_drained.patch
+# For bz#1979276 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch61: kvm-accel-introduce-accelerator-blocker-API.patch
+# For bz#1979276 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch62: kvm-KVM-keep-track-of-running-ioctls.patch
+# For bz#1979276 - SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on
+Patch63: kvm-kvm-Atomic-memslot-updates.patch
+# For bz#2141088 - vDPA SVQ guest announce support
+Patch64: kvm-virtio_net-Modify-virtio_net_get_config-to-early-ret.patch
+# For bz#2141088 - vDPA SVQ guest announce support
+Patch65: kvm-virtio_net-copy-VIRTIO_NET_S_ANNOUNCE-if-device-mode.patch
+# For bz#2141088 - vDPA SVQ guest announce support
+Patch66: kvm-vdpa-handle-VIRTIO_NET_CTRL_ANNOUNCE-in-vhost_vdpa_n.patch
+# For bz#2141088 - vDPA SVQ guest announce support
+Patch67: kvm-vdpa-do-not-handle-VIRTIO_NET_F_GUEST_ANNOUNCE-in-vh.patch
+# For bz#2122523 - Secure guest can't boot with maximal number of vcpus (248)
+Patch68: kvm-s390x-pv-Implement-a-CGS-check-helper.patch
+# For bz#2163701 - [s390x] VM fails to start with ISM passed through
+Patch69: kvm-s390x-pci-coalesce-unmap-operations.patch
+# For bz#2163701 - [s390x] VM fails to start with ISM passed through
+Patch70: kvm-s390x-pci-shrink-DMA-aperture-to-be-bound-by-vfio-DM.patch
+# For bz#2163701 - [s390x] VM fails to start with ISM passed through
+Patch71: kvm-s390x-pci-reset-ISM-passthrough-devices-on-shutdown-.patch
+# For bz#2149191 - [RFE][guest-agent] - USB bus type support
+Patch72: kvm-qga-linux-add-usb-support-to-guest-get-fsinfo.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch73: kvm-vdpa-use-v-shadow_vqs_enabled-in-vhost_vdpa_svqs_sta.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch74: kvm-vhost-set-SVQ-device-call-handler-at-SVQ-start.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch75: kvm-vhost-allocate-SVQ-device-file-descriptors-at-device.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch76: kvm-vhost-move-iova_tree-set-to-vhost_svq_start.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch77: kvm-vdpa-add-vhost_vdpa_net_valid_svq_features.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch78: kvm-vdpa-request-iova_range-only-once.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch79: kvm-vdpa-move-SVQ-vring-features-check-to-net.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch80: kvm-vdpa-allocate-SVQ-array-unconditionally.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch81: kvm-vdpa-add-asid-parameter-to-vhost_vdpa_dma_map-unmap.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch82: kvm-vdpa-store-x-svq-parameter-in-VhostVDPAState.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch83: kvm-vdpa-add-shadow_data-to-vhost_vdpa.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch84: kvm-vdpa-always-start-CVQ-in-SVQ-mode-if-possible.patch
+# For bz#2104412 - vDPA ASID support in Qemu
+Patch85: kvm-vdpa-fix-VHOST_BACKEND_F_IOTLB_ASID-flag-check.patch
+# For bz#2150180 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch86: kvm-qcow2-Fix-theoretical-corruption-in-store_bitmap-err.patch
+# For bz#2150180 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch87: kvm-qemu-img-commit-Report-errors-while-closing-the-imag.patch
+# For bz#2150180 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch88: kvm-qemu-img-bitmap-Report-errors-while-closing-the-imag.patch
+# For bz#2150180 - qemu-img finishes successfully while having errors in commit or bitmaps operations
+Patch89: kvm-qemu-iotests-Test-qemu-img-bitmap-commit-exit-code-o.patch
+# For bz#2165280 - [kvm-unit-tests] debug-wp-migration fails
+Patch90: kvm-accel-tcg-Test-CPUJumpCache-in-tb_jmp_cache_clear_pa.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch91: kvm-block-Improve-empty-format-specific-info-dump.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch92: kvm-block-file-Add-file-specific-image-info.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch93: kvm-block-vmdk-Change-extent-info-type.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch94: kvm-block-Split-BlockNodeInfo-off-of-ImageInfo.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch95: kvm-qemu-img-Use-BlockNodeInfo.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch96: kvm-block-qapi-Let-bdrv_query_image_info-recurse.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch97: kvm-block-qapi-Introduce-BlockGraphInfo.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch98: kvm-block-qapi-Add-indentation-to-bdrv_node_info_dump.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch99: kvm-iotests-Filter-child-node-information.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch100: kvm-iotests-106-214-308-Read-only-one-size-line.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch101: kvm-qemu-img-Let-info-print-block-graph.patch
+# For bz#1860292 - RFE: add extent_size_hint information to qemu-img info
+Patch102: kvm-qemu-img-Change-info-key-names-for-protocol-nodes.patch
+# For bz#2155173 - [vhost-user] unable to start vhost net: 71: falling back on userspace
+Patch103: kvm-Revert-vhost-user-Monitor-slave-channel-in-vhost_use.patch
+# For bz#2155173 - [vhost-user] unable to start vhost net: 71: falling back on userspace
+Patch104: kvm-Revert-vhost-user-Introduce-nested-event-loop-in-vho.patch
+# For bz#2162569 - [transitional device][virtio-rng-pci-transitional]Stable Guest ABI failed between RHEL 8.6 to RHEL 9.2
+Patch105: kvm-virtio-rng-pci-fix-transitional-migration-compat-for.patch
+# For bz#2169232 - RFE: reconnect option for stream socket back-end
+Patch106: kvm-tests-qtest-netdev-test-stream-and-dgram-backends.patch
+# For bz#2169232 - RFE: reconnect option for stream socket back-end
+Patch107: kvm-net-stream-add-a-new-option-to-automatically-reconne.patch
+# For bz#2158704 - RFE: Prefer /dev/userfaultfd over userfaultfd(2) syscall
+Patch108: kvm-linux-headers-Update-to-v6.1.patch
+# For bz#2158704 - RFE: Prefer /dev/userfaultfd over userfaultfd(2) syscall
+Patch109: kvm-util-userfaultfd-Add-uffd_open.patch
+# For bz#2158704 - RFE: Prefer /dev/userfaultfd over userfaultfd(2) syscall
+Patch110: kvm-util-userfaultfd-Support-dev-userfaultfd.patch
+# For bz#2169732 - Multifd migration fails under a weak network/socket ordering race
+Patch111: kvm-io-Add-support-for-MSG_PEEK-for-socket-channel.patch
+# For bz#2169732 - Multifd migration fails under a weak network/socket ordering race
+Patch112: kvm-migration-check-magic-value-for-deciding-the-mapping.patch
+# For bz#2168172 - [s390x] qemu-kvm coredumps when SE crashes
+Patch113: kvm-target-s390x-arch_dump-Fix-memory-corruption-in-s390.patch
+# For bz#2168209 - Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled)
+Patch114: kvm-block-temporarily-hold-the-new-AioContext-of-bs_top-.patch
+# For bz#2169904 - [SVVP] job 'Check SMBIOS Table Specific Requirements' failed on win2022
+Patch115: kvm-hw-smbios-fix-field-corruption-in-type-4-table.patch
+# For bz#2155748 - qemu crash on void blk_drain(BlockBackend *): Assertion qemu_in_main_thread() failed
+Patch116: kvm-scsi-protect-req-aiocb-with-AioContext-lock.patch
+# For bz#2155748 - qemu crash on void blk_drain(BlockBackend *): Assertion qemu_in_main_thread() failed
+Patch117: kvm-dma-helpers-prevent-dma_blk_cb-vs-dma_aio_cancel-rac.patch
+# For bz#2155748 - qemu crash on void blk_drain(BlockBackend *): Assertion qemu_in_main_thread() failed
+Patch118: kvm-virtio-scsi-reset-SCSI-devices-from-main-loop-thread.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch119: kvm-qatomic-add-smp_mb__before-after_rmw.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch120: kvm-qemu-thread-posix-cleanup-fix-document-QemuEvent.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch121: kvm-qemu-thread-win32-cleanup-fix-document-QemuEvent.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch122: kvm-edu-add-smp_mb__after_rmw.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch123: kvm-aio-wait-switch-to-smp_mb__after_rmw.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch124: kvm-qemu-coroutine-lock-add-smp_mb__after_rmw.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch125: kvm-physmem-add-missing-memory-barrier.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch126: kvm-async-update-documentation-of-the-memory-barriers.patch
+# For bz#2175660 - Guest hangs when starting or rebooting
+Patch127: kvm-async-clarify-usage-of-barriers-in-the-polling-case.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch128: kvm-target-i386-fix-operand-size-of-unary-SSE-operations.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch129: kvm-tests-tcg-i386-Introduce-and-use-reg_t-consistently.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch130: kvm-target-i386-Fix-BEXTR-instruction.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch131: kvm-target-i386-Fix-C-flag-for-BLSI-BLSMSK-BLSR.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch132: kvm-target-i386-fix-ADOX-followed-by-ADCX.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch133: kvm-target-i386-Fix-32-bit-AD-CO-X-insns-in-64-bit-mode.patch
+# For bz#2173590 - bugs in emulation of BMI instructions (for libguestfs without KVM)
+Patch134: kvm-target-i386-Fix-BZHI-instruction.patch
+# For bz#2156876 - [virtual network][rhel7.9_guest] qemu-kvm: vhost vring error in virtqueue 1: Invalid argument (22)
+Patch135: kvm-intel-iommu-fail-DEVIOTLB_UNMAP-without-dt-mode.patch
 
 %if %{have_clang}
 BuildRequires: clang
@@ -570,13 +486,14 @@ BuildRequires: perl-Test-Harness
 BuildRequires: libslirp-devel
 BuildRequires: pulseaudio-libs-devel
 BuildRequires: spice-protocol
+BuildRequires: capstone-devel
 
 # Requires for qemu-kvm package
 Requires: %{name}-core = %{epoch}:%{version}-%{release}
 Requires: %{name}-docs = %{epoch}:%{version}-%{release}
 Requires: %{name}-tools = %{epoch}:%{version}-%{release}
 Requires: qemu-pr-helper = %{epoch}:%{version}-%{release}
-Requires: virtiofsd = %{epoch}:%{version}-%{release}
+Requires: virtiofsd >= 1.5.0
 %{requires_all_modules}
 
 %description
@@ -600,6 +517,7 @@ Requires: edk2-aarch64
 
 Requires: libseccomp >= %{libseccomp_version}
 Requires: libusbx >= %{libusbx_version}
+Requires: capstone
 %if %{have_fdt}
 Requires: libfdt >= %{libfdt_version}
 %endif
@@ -634,6 +552,10 @@ Requires: seabios-bin >= 1.10.2-1
 Requires: seavgabios-bin >= 1.12.0-3
 Requires: ipxe-roms-qemu >= %{ipxe_version}
 %endif
+# Removal -gl modules as they do not provide any functionality - see bz#2149022
+Obsoletes: %{name}-device-display-virtio-gpu-gl <= %{epoch}:%{version}
+Obsoletes: %{name}-device-display-virtio-gpu-pci-gl <= %{epoch}:%{version}
+Obsoletes: %{name}-device-display-virtio-vga-gl <= %{epoch}:%{version}
 
 %description common
 %{name} is an open source virtualizer that provides hardware emulation for
@@ -750,30 +672,20 @@ Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu
 This package provides the virtio-gpu display device for QEMU.
 
-%package device-display-virtio-gpu-gl
-Summary: QEMU virtio-gpu-gl display device
-Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-%description device-display-virtio-gpu-gl
-This package provides the virtio-gpu-gl display device for QEMU.
-
 %ifarch s390x
 %package device-display-virtio-gpu-ccw
 Summary: QEMU virtio-gpu-ccw display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-device-display-virtio-gpu = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu-ccw
 This package provides the virtio-gpu-ccw display device for QEMU.
 %else
 %package device-display-virtio-gpu-pci
 Summary: QEMU virtio-gpu-pci display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-device-display-virtio-gpu = %{epoch}:%{version}-%{release}
 %description device-display-virtio-gpu-pci
 This package provides the virtio-gpu-pci display device for QEMU.
-
-%package device-display-virtio-gpu-pci-gl
-Summary: QEMU virtio-gpu-pci-gl display device
-Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-%description device-display-virtio-gpu-pci-gl
-This package provides the virtio-gpu-pci-gl display device for QEMU.
 %endif
 
 %ifarch x86_64 %{power64}
@@ -782,12 +694,6 @@ Summary: QEMU virtio-vga display device
 Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
 %description device-display-virtio-vga
 This package provides the virtio-vga display device for QEMU.
-
-%package device-display-virtio-vga-gl
-Summary: QEMU virtio-vga-gl display device
-Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
-%description device-display-virtio-vga-gl
-This package provides the virtio-vga-gl display device for QEMU.
 %endif
 
 %package device-usb-host
@@ -817,6 +723,10 @@ mkdir -p %{qemu_kvm_build}
 
 
 %build
+
+# Necessary hack for ZUUL CI
+ulimit -n 10240
+
 %define disable_everything         \\\
   --audio-drv-list=                \\\
   --disable-alsa                   \\\
@@ -824,6 +734,7 @@ mkdir -p %{qemu_kvm_build}
   --disable-auth-pam               \\\
   --disable-avx2                   \\\
   --disable-avx512f                \\\
+  --disable-blkio                  \\\
   --disable-block-drv-whitelist-in-tools \\\
   --disable-bochs                  \\\
   --disable-bpf                    \\\
@@ -872,6 +783,7 @@ mkdir -p %{qemu_kvm_build}
   --disable-libssh                 \\\
   --disable-libudev                \\\
   --disable-libusb                 \\\
+  --disable-libvduse               \\\
   --disable-linux-aio              \\\
   --disable-linux-io-uring         \\\
   --disable-linux-user             \\\
@@ -913,6 +825,7 @@ mkdir -p %{qemu_kvm_build}
   --disable-slirp-smbd             \\\
   --disable-smartcard              \\\
   --disable-snappy                 \\\
+  --disable-sndio                  \\\
   --disable-sparse                 \\\
   --disable-spice                  \\\
   --disable-spice-protocol         \\\
@@ -926,20 +839,19 @@ mkdir -p %{qemu_kvm_build}
   --disable-user                   \\\
   --disable-vde                    \\\
   --disable-vdi                    \\\
+  --disable-vduse-blk-export       \\\
   --disable-vhost-crypto           \\\
   --disable-vhost-kernel           \\\
   --disable-vhost-net              \\\
-  --disable-vhost-scsi             \\\
   --disable-vhost-user             \\\
   --disable-vhost-user-blk-server  \\\
   --disable-vhost-vdpa             \\\
-  --disable-vhost-vsock            \\\
   --disable-virglrenderer          \\\
   --disable-virtfs                 \\\
   --disable-virtiofsd              \\\
   --disable-vnc                    \\\
   --disable-vnc-jpeg               \\\
-  --disable-vnc-png                \\\
+  --disable-png                    \\\
   --disable-vnc-sasl               \\\
   --disable-vte                    \\\
   --disable-vvfat                  \\\
@@ -970,7 +882,7 @@ run_configure() {
         --with-pkgversion="%{name}-%{version}-%{release}" \
         --with-suffix="%{name}" \
         --firmwarepath=%{firmwaredirs} \
-        --meson="internal" \
+        --meson="%{__meson}" \
         --enable-trace-backend=dtrace \
         --with-coroutine=ucontext \
         --with-git=git \
@@ -999,7 +911,7 @@ run_configure \
 %endif
   --enable-attr \
   --enable-cap-ng \
-  --enable-capstone=internal \
+  --enable-capstone \
   --enable-coroutine-pool \
   --enable-curl \
   --enable-debug-info \
@@ -1037,7 +949,7 @@ run_configure \
 %endif
   --enable-seccomp \
   --enable-selinux \
-  --enable-slirp=system \
+  --enable-slirp \
   --enable-snappy \
   --enable-spice-protocol \
   --enable-system \
@@ -1054,9 +966,8 @@ run_configure \
   --enable-vhost-user \
   --enable-vhost-user-blk-server \
   --enable-vhost-vdpa \
-  --enable-vhost-vsock \
   --enable-vnc \
-  --enable-vnc-png \
+  --enable-png \
   --enable-vnc-sasl \
 %if %{enable_werror}
   --enable-werror \
@@ -1323,6 +1234,16 @@ install -D -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/%{name}/
 install -m 0644 contrib/systemd/qemu-pr-helper.service %{buildroot}%{_unitdir}
 install -m 0644 contrib/systemd/qemu-pr-helper.socket %{buildroot}%{_unitdir}
 
+# We do not support gl display devices so we can remove their modules as they
+# do not have expected functionality included.
+#
+# https://gitlab.com/qemu-project/qemu/-/issues/1352 was filed to stop building these
+# modules in case all dependencies are not satisfied.
+
+rm -rf %{buildroot}%{_libdir}/%{name}/hw-display-virtio-gpu-gl.so
+rm -rf %{buildroot}%{_libdir}/%{name}/hw-display-virtio-gpu-pci-gl.so
+rm -rf %{buildroot}%{_libdir}/%{name}/hw-display-virtio-vga-gl.so
+
 # We need to make the block device modules and other qemu SO files executable
 # otherwise RPM won't pick up their dependencies.
 chmod +x %{buildroot}%{_libdir}/%{name}/*.so
@@ -1480,25 +1401,17 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %files device-display-virtio-gpu
 %{_libdir}/%{name}/hw-display-virtio-gpu.so
 
-%files device-display-virtio-gpu-gl
-%{_libdir}/%{name}/hw-display-virtio-gpu-gl.so
-
 %ifarch s390x
 %files device-display-virtio-gpu-ccw
     %{_libdir}/%{name}/hw-s390x-virtio-gpu-ccw.so
 %else
 %files device-display-virtio-gpu-pci
     %{_libdir}/%{name}/hw-display-virtio-gpu-pci.so
-
-%files device-display-virtio-gpu-pci-gl
-    %{_libdir}/%{name}/hw-display-virtio-gpu-pci-gl.so
 %endif
 
 %ifarch x86_64 %{power64}
 %files device-display-virtio-vga
     %{_libdir}/%{name}/hw-display-virtio-vga.so
-%files device-display-virtio-vga-gl
-    %{_libdir}/%{name}/hw-display-virtio-vga-gl.so
 %endif
 
 %files tests
@@ -1533,52 +1446,287 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
-* Mon Feb 13 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13.el9_1.2
-- kvm-migration-Read-state-once.patch [bz#2168221]
-- Resolves: bz#2168221
-  (while live-migrating many instances concurrently, libvirt sometimes return internal error: migration was active, but no RAM info was set [rhel-9.1.0.z])
+* Mon Mar 20 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14
+- Rebuild for 9.2 release
+- Resolves: bz#2173590
+  (bugs in emulation of BMI instructions (for libguestfs without KVM))
+- Resolves: bz#2156876
+  ([virtual network][rhel7.9_guest] qemu-kvm: vhost vring error in virtqueue 1: Invalid argument (22))
 
-* Thu Feb 02 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13.el9_1.1
-- kvm-target-i386-kvm-fix-kvmclock_current_nsec-Assertion-.patch [bz#2134896]
-- Resolves: bz#2134896
-  (Windows guest reboot after migration with wsl2 installed inside [rhel-9.1.0.z])
+* Mon Mar 20 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-13
+- kvm-target-i386-fix-operand-size-of-unary-SSE-operations.patch [bz#2173590]
+- kvm-tests-tcg-i386-Introduce-and-use-reg_t-consistently.patch [bz#2173590]
+- kvm-target-i386-Fix-BEXTR-instruction.patch [bz#2173590]
+- kvm-target-i386-Fix-C-flag-for-BLSI-BLSMSK-BLSR.patch [bz#2173590]
+- kvm-target-i386-fix-ADOX-followed-by-ADCX.patch [bz#2173590]
+- kvm-target-i386-Fix-32-bit-AD-CO-X-insns-in-64-bit-mode.patch [bz#2173590]
+- kvm-target-i386-Fix-BZHI-instruction.patch [bz#2173590]
+- kvm-intel-iommu-fail-DEVIOTLB_UNMAP-without-dt-mode.patch [bz#2156876]
+- Resolves: bz#2173590
+  (bugs in emulation of BMI instructions (for libguestfs without KVM))
+- Resolves: bz#2156876
+  ([virtual network][rhel7.9_guest] qemu-kvm: vhost vring error in virtqueue 1: Invalid argument (22))
 
-* Tue Sep 13 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-13
-- kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch [bz#2117546]
-- kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch [bz#2117546]
-- Resolves: bz#2117546
-  ([RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command)
+* Sun Mar 12 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-12
+- kvm-scsi-protect-req-aiocb-with-AioContext-lock.patch [bz#2155748]
+- kvm-dma-helpers-prevent-dma_blk_cb-vs-dma_aio_cancel-rac.patch [bz#2155748]
+- kvm-virtio-scsi-reset-SCSI-devices-from-main-loop-thread.patch [bz#2155748]
+- kvm-qatomic-add-smp_mb__before-after_rmw.patch [bz#2175660]
+- kvm-qemu-thread-posix-cleanup-fix-document-QemuEvent.patch [bz#2175660]
+- kvm-qemu-thread-win32-cleanup-fix-document-QemuEvent.patch [bz#2175660]
+- kvm-edu-add-smp_mb__after_rmw.patch [bz#2175660]
+- kvm-aio-wait-switch-to-smp_mb__after_rmw.patch [bz#2175660]
+- kvm-qemu-coroutine-lock-add-smp_mb__after_rmw.patch [bz#2175660]
+- kvm-physmem-add-missing-memory-barrier.patch [bz#2175660]
+- kvm-async-update-documentation-of-the-memory-barriers.patch [bz#2175660]
+- kvm-async-clarify-usage-of-barriers-in-the-polling-case.patch [bz#2175660]
+- Resolves: bz#2155748
+  (qemu crash on void blk_drain(BlockBackend *): Assertion qemu_in_main_thread() failed)
+- Resolves: bz#2175660
+  (Guest hangs when starting or rebooting)
 
-* Fri Aug 26 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-12
-- kvm-scsi-generic-Fix-emulated-block-limits-VPD-page.patch [bz#2120275]
-- kvm-vhost-Get-vring-base-from-vq-not-svq.patch [bz#2114060]
-- kvm-vdpa-Skip-the-maps-not-in-the-iova-tree.patch [bz#2114060]
-- kvm-vdpa-do-not-save-failed-dma-maps-in-SVQ-iova-tree.patch [bz#2114060]
-- kvm-util-Return-void-on-iova_tree_remove.patch [bz#2114060]
-- kvm-util-accept-iova_tree_remove_parameter-by-value.patch [bz#2114060]
-- kvm-vdpa-Remove-SVQ-vring-from-iova_tree-at-shutdown.patch [bz#2114060]
-- kvm-vdpa-Make-SVQ-vring-unmapping-return-void.patch [bz#2114060]
-- kvm-vhost-Always-store-new-kick-fd-on-vhost_svq_set_svq_.patch [bz#2114060]
-- kvm-vdpa-Use-ring-hwaddr-at-vhost_vdpa_svq_unmap_ring.patch [bz#2114060]
-- kvm-vhost-stop-transfer-elem-ownership-in-vhost_handle_g.patch [bz#2114060]
-- kvm-vhost-use-SVQ-element-ndescs-instead-of-opaque-data-.patch [bz#2114060]
-- kvm-vhost-Delete-useless-read-memory-barrier.patch [bz#2114060]
-- kvm-vhost-Do-not-depend-on-NULL-VirtQueueElement-on-vhos.patch [bz#2114060]
-- kvm-vhost_net-Add-NetClientInfo-start-callback.patch [bz#2114060]
-- kvm-vhost_net-Add-NetClientInfo-stop-callback.patch [bz#2114060]
-- kvm-vdpa-add-net_vhost_vdpa_cvq_info-NetClientInfo.patch [bz#2114060]
-- kvm-vdpa-Move-command-buffers-map-to-start-of-net-device.patch [bz#2114060]
-- kvm-vdpa-extract-vhost_vdpa_net_cvq_add-from-vhost_vdpa_.patch [bz#2114060]
-- kvm-vhost_net-add-NetClientState-load-callback.patch [bz#2114060]
-- kvm-vdpa-Add-virtio-net-mac-address-via-CVQ-at-start.patch [bz#2114060]
-- kvm-vdpa-Delete-CVQ-migration-blocker.patch [bz#2114060]
-- kvm-virtio-scsi-fix-race-in-virtio_scsi_dataplane_start.patch [bz#2099541]
-- Resolves: bz#2120275
-  (Wrong max_sectors_kb and Maximum transfer length on the pass-through device [rhel-9.1])
-- Resolves: bz#2114060
-  (vDPA state restore support through control virtqueue in Qemu)
-- Resolves: bz#2099541
-  (qemu coredump with error Assertion `qemu_mutex_iothread_locked()' failed when repeatly hotplug/unplug disks in pause status)
+* Mon Mar 06 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-11
+- kvm-hw-smbios-fix-field-corruption-in-type-4-table.patch [bz#2169904]
+- Resolves: bz#2169904
+  ([SVVP] job 'Check SMBIOS Table Specific Requirements' failed on win2022)
+
+* Tue Feb 21 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-10
+- kvm-block-temporarily-hold-the-new-AioContext-of-bs_top-.patch [bz#2168209]
+- Resolves: bz#2168209
+  (Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled))
+
+* Fri Feb 17 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-9
+- kvm-tests-qtest-netdev-test-stream-and-dgram-backends.patch [bz#2169232]
+- kvm-net-stream-add-a-new-option-to-automatically-reconne.patch [bz#2169232]
+- kvm-linux-headers-Update-to-v6.1.patch [bz#2158704]
+- kvm-util-userfaultfd-Add-uffd_open.patch [bz#2158704]
+- kvm-util-userfaultfd-Support-dev-userfaultfd.patch [bz#2158704]
+- kvm-io-Add-support-for-MSG_PEEK-for-socket-channel.patch [bz#2169732]
+- kvm-migration-check-magic-value-for-deciding-the-mapping.patch [bz#2169732]
+- kvm-target-s390x-arch_dump-Fix-memory-corruption-in-s390.patch [bz#2168172]
+- Resolves: bz#2169232
+  (RFE: reconnect option for stream socket back-end)
+- Resolves: bz#2158704
+  (RFE: Prefer /dev/userfaultfd over userfaultfd(2) syscall)
+- Resolves: bz#2169732
+  (Multifd migration fails under a weak network/socket ordering race)
+- Resolves: bz#2168172
+  ([s390x] qemu-kvm coredumps when SE crashes)
+
+* Thu Feb 09 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-8
+- kvm-qcow2-Fix-theoretical-corruption-in-store_bitmap-err.patch [bz#2150180]
+- kvm-qemu-img-commit-Report-errors-while-closing-the-imag.patch [bz#2150180]
+- kvm-qemu-img-bitmap-Report-errors-while-closing-the-imag.patch [bz#2150180]
+- kvm-qemu-iotests-Test-qemu-img-bitmap-commit-exit-code-o.patch [bz#2150180]
+- kvm-accel-tcg-Test-CPUJumpCache-in-tb_jmp_cache_clear_pa.patch [bz#2165280]
+- kvm-block-Improve-empty-format-specific-info-dump.patch [bz#1860292]
+- kvm-block-file-Add-file-specific-image-info.patch [bz#1860292]
+- kvm-block-vmdk-Change-extent-info-type.patch [bz#1860292]
+- kvm-block-Split-BlockNodeInfo-off-of-ImageInfo.patch [bz#1860292]
+- kvm-qemu-img-Use-BlockNodeInfo.patch [bz#1860292]
+- kvm-block-qapi-Let-bdrv_query_image_info-recurse.patch [bz#1860292]
+- kvm-block-qapi-Introduce-BlockGraphInfo.patch [bz#1860292]
+- kvm-block-qapi-Add-indentation-to-bdrv_node_info_dump.patch [bz#1860292]
+- kvm-iotests-Filter-child-node-information.patch [bz#1860292]
+- kvm-iotests-106-214-308-Read-only-one-size-line.patch [bz#1860292]
+- kvm-qemu-img-Let-info-print-block-graph.patch [bz#1860292]
+- kvm-qemu-img-Change-info-key-names-for-protocol-nodes.patch [bz#1860292]
+- kvm-Revert-vhost-user-Monitor-slave-channel-in-vhost_use.patch [bz#2155173]
+- kvm-Revert-vhost-user-Introduce-nested-event-loop-in-vho.patch [bz#2155173]
+- kvm-virtio-rng-pci-fix-transitional-migration-compat-for.patch [bz#2162569]
+- Resolves: bz#2150180
+  (qemu-img finishes successfully while having errors in commit or bitmaps operations)
+- Resolves: bz#2165280
+  ([kvm-unit-tests] debug-wp-migration fails)
+- Resolves: bz#1860292
+  (RFE: add extent_size_hint information to qemu-img info)
+- Resolves: bz#2155173
+  ([vhost-user] unable to start vhost net: 71: falling back on userspace)
+- Resolves: bz#2162569
+  ([transitional device][virtio-rng-pci-transitional]Stable Guest ABI failed between RHEL 8.6 to RHEL 9.2)
+
+* Mon Feb 06 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-7
+- kvm-vdpa-use-v-shadow_vqs_enabled-in-vhost_vdpa_svqs_sta.patch [bz#2104412]
+- kvm-vhost-set-SVQ-device-call-handler-at-SVQ-start.patch [bz#2104412]
+- kvm-vhost-allocate-SVQ-device-file-descriptors-at-device.patch [bz#2104412]
+- kvm-vhost-move-iova_tree-set-to-vhost_svq_start.patch [bz#2104412]
+- kvm-vdpa-add-vhost_vdpa_net_valid_svq_features.patch [bz#2104412]
+- kvm-vdpa-request-iova_range-only-once.patch [bz#2104412]
+- kvm-vdpa-move-SVQ-vring-features-check-to-net.patch [bz#2104412]
+- kvm-vdpa-allocate-SVQ-array-unconditionally.patch [bz#2104412]
+- kvm-vdpa-add-asid-parameter-to-vhost_vdpa_dma_map-unmap.patch [bz#2104412]
+- kvm-vdpa-store-x-svq-parameter-in-VhostVDPAState.patch [bz#2104412]
+- kvm-vdpa-add-shadow_data-to-vhost_vdpa.patch [bz#2104412]
+- kvm-vdpa-always-start-CVQ-in-SVQ-mode-if-possible.patch [bz#2104412]
+- kvm-vdpa-fix-VHOST_BACKEND_F_IOTLB_ASID-flag-check.patch [bz#2104412]
+- kvm-spec-Disable-VDUSE.patch [bz#2128222]
+- Resolves: bz#2104412
+  (vDPA ASID support in Qemu)
+- Resolves: bz#2128222
+  (VDUSE block export should be disabled in builds for now)
+
+* Mon Jan 30 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-6
+- kvm-virtio_net-Modify-virtio_net_get_config-to-early-ret.patch [bz#2141088]
+- kvm-virtio_net-copy-VIRTIO_NET_S_ANNOUNCE-if-device-mode.patch [bz#2141088]
+- kvm-vdpa-handle-VIRTIO_NET_CTRL_ANNOUNCE-in-vhost_vdpa_n.patch [bz#2141088]
+- kvm-vdpa-do-not-handle-VIRTIO_NET_F_GUEST_ANNOUNCE-in-vh.patch [bz#2141088]
+- kvm-s390x-pv-Implement-a-CGS-check-helper.patch [bz#2122523]
+- kvm-s390x-pci-coalesce-unmap-operations.patch [bz#2163701]
+- kvm-s390x-pci-shrink-DMA-aperture-to-be-bound-by-vfio-DM.patch [bz#2163701]
+- kvm-s390x-pci-reset-ISM-passthrough-devices-on-shutdown-.patch [bz#2163701]
+- kvm-qga-linux-add-usb-support-to-guest-get-fsinfo.patch [bz#2149191]
+- Resolves: bz#2141088
+  (vDPA SVQ guest announce support)
+- Resolves: bz#2122523
+  (Secure guest can't boot with maximal number of vcpus (248))
+- Resolves: bz#2163701
+  ([s390x] VM fails to start with ISM passed through)
+- Resolves: bz#2149191
+  ([RFE][guest-agent] - USB bus type support)
+
+* Tue Jan 17 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-5
+- kvm-virtio-introduce-macro-VIRTIO_CONFIG_IRQ_IDX.patch [bz#1905805]
+- kvm-virtio-pci-decouple-notifier-from-interrupt-process.patch [bz#1905805]
+- kvm-virtio-pci-decouple-the-single-vector-from-the-inter.patch [bz#1905805]
+- kvm-vhost-introduce-new-VhostOps-vhost_set_config_call.patch [bz#1905805]
+- kvm-vhost-vdpa-add-support-for-config-interrupt.patch [bz#1905805]
+- kvm-virtio-add-support-for-configure-interrupt.patch [bz#1905805]
+- kvm-vhost-add-support-for-configure-interrupt.patch [bz#1905805]
+- kvm-virtio-net-add-support-for-configure-interrupt.patch [bz#1905805]
+- kvm-virtio-mmio-add-support-for-configure-interrupt.patch [bz#1905805]
+- kvm-virtio-pci-add-support-for-configure-interrupt.patch [bz#1905805]
+- kvm-s390x-s390-virtio-ccw-Activate-zPCI-features-on-s390.patch [bz#2159408]
+- kvm-vhost-fix-vq-dirty-bitmap-syncing-when-vIOMMU-is-ena.patch [bz#2124856]
+- kvm-block-drop-bdrv_remove_filter_or_cow_child.patch [bz#2155112]
+- kvm-qed-Don-t-yield-in-bdrv_qed_co_drain_begin.patch [bz#2155112]
+- kvm-test-bdrv-drain-Don-t-yield-in-.bdrv_co_drained_begi.patch [bz#2155112]
+- kvm-block-Revert-.bdrv_drained_begin-end-to-non-coroutin.patch [bz#2155112]
+- kvm-block-Remove-drained_end_counter.patch [bz#2155112]
+- kvm-block-Inline-bdrv_drain_invoke.patch [bz#2155112]
+- kvm-block-Fix-locking-for-bdrv_reopen_queue_child.patch [bz#2155112]
+- kvm-block-Drain-individual-nodes-during-reopen.patch [bz#2155112]
+- kvm-block-Don-t-use-subtree-drains-in-bdrv_drop_intermed.patch [bz#2155112]
+- kvm-stream-Replace-subtree-drain-with-a-single-node-drai.patch [bz#2155112]
+- kvm-block-Remove-subtree-drains.patch [bz#2155112]
+- kvm-block-Call-drain-callbacks-only-once.patch [bz#2155112]
+- kvm-block-Remove-ignore_bds_parents-parameter-from-drain.patch [bz#2155112]
+- kvm-block-Drop-out-of-coroutine-in-bdrv_do_drained_begin.patch [bz#2155112]
+- kvm-block-Don-t-poll-in-bdrv_replace_child_noperm.patch [bz#2155112]
+- kvm-block-Remove-poll-parameter-from-bdrv_parent_drained.patch [bz#2155112]
+- kvm-accel-introduce-accelerator-blocker-API.patch [bz#1979276]
+- kvm-KVM-keep-track-of-running-ioctls.patch [bz#1979276]
+- kvm-kvm-Atomic-memslot-updates.patch [bz#1979276]
+- Resolves: bz#1905805
+  (support config interrupt in vhost-vdpa qemu)
+- Resolves: bz#2159408
+  ([s390x] VMs with ISM passthrough don't autostart after leapp upgrade from RHEL 8)
+- Resolves: bz#2124856
+  (VM with virtio interface and iommu=on will crash when try to migrate)
+- Resolves: bz#2155112
+  (Qemu coredump after do snapshot of mirrored top image and its converted base image(iothread enabled))
+- Resolves: bz#1979276
+  (SVM: non atomic memslot updates cause boot failure with seabios and cpu-pm=on)
+
+* Thu Jan 12 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-4
+- kvm-virtio-rng-pci-fix-migration-compat-for-vectors.patch [bz#2155749]
+- kvm-Update-QGA-service-for-new-command-line.patch [bz#2156515]
+- Resolves: bz#2155749
+  ([regression][stable guest abi][qemu-kvm7.2]Migration failed due to virtio-rng device between RHEL8.8 and RHEL9.2/MSI-X)
+- Resolves: bz#2156515
+  ([guest-agent] Replace '-blacklist' to '-block-rpcs' in qemu-ga config file)
+
+* Wed Jan 04 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-3
+- kvm-hw-arm-virt-Introduce-virt_set_high_memmap-helper.patch [bz#2113840]
+- kvm-hw-arm-virt-Rename-variable-size-to-region_size-in-v.patch [bz#2113840]
+- kvm-hw-arm-virt-Introduce-variable-region_base-in-virt_s.patch [bz#2113840]
+- kvm-hw-arm-virt-Introduce-virt_get_high_memmap_enabled-h.patch [bz#2113840]
+- kvm-hw-arm-virt-Improve-high-memory-region-address-assig.patch [bz#2113840]
+- kvm-hw-arm-virt-Add-compact-highmem-property.patch [bz#2113840]
+- kvm-hw-arm-virt-Add-properties-to-disable-high-memory-re.patch [bz#2113840]
+- kvm-hw-arm-virt-Enable-compat-high-memory-region-address.patch [bz#2113840]
+- Resolves: bz#2113840
+  ([RHEL9.2] Memory mapping optimization for virt machine)
+
+* Tue Dec 20 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-2
+- Fix updating from 7.1.0
+- kvm-redhat-fix-virt-rhel9.2.0-compat-props.patch[bz#2154640]
+- Resolves: bz#2154640
+  ([aarch64] qemu fails to load "efi-virtio.rom" romfile when creating virtio-net-pci)
+
+* Thu Dec 15 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-1
+- Rebase to QEMU 7.2.0 [bz#2135806]
+- Resolves: bz#2135806
+  (Rebase to QEMU 7.2 for RHEL 9.2.0)
+
+* Wed Dec 14 2022 Jon Maloy <jmaloy@redhat.com> - 7.1.0-7
+- kvm-hw-acpi-erst.c-Fix-memory-handling-issues.patch [bz#2149108]
+- Resolves: bz#2149108
+  (CVE-2022-4172 qemu-kvm: QEMU: ACPI ERST: memory corruption issues in read_erst_record and write_erst_record [rhel-9])
+
+* Fri Dec 02 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.1.0-6
+- kvm-block-move-bdrv_qiov_is_aligned-to-file-posix.patch [bz#2143170]
+- kvm-block-use-the-request-length-for-iov-alignment.patch [bz#2143170]
+- Resolves: bz#2143170
+  (The installation can not start when install files (iso) locate on a 4k disk)
+
+* Mon Nov 14 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.1.0-5
+- kvm-rtl8139-Remove-unused-variable.patch [bz#2141218]
+- kvm-qemu-img-remove-unused-variable.patch [bz#2141218]
+- kvm-host-libusb-Remove-unused-variable.patch [bz#2141218]
+- Resolves: bz#2141218
+  (qemu-kvm build fails with clang 15.0.1 due to false unused variable error)
+
+* Tue Nov 01 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.1.0-4
+- kvm-Revert-intel_iommu-Fix-irqchip-X2APIC-configuration-.patch [bz#2126095]
+- Resolves: bz#2126095
+  ([rhel9.2][intel_iommu]Booting guest with "-device intel-iommu,intremap=on,device-iotlb=on,caching-mode=on" causes kernel call trace)
+
+* Thu Oct 13 2022 Jon Maloy <jmaloy@redhat.com> - 7.1.0-3
+- kvm-target-i386-kvm-fix-kvmclock_current_nsec-Assertion-.patch [bz#2108531]
+- Resolves: bz#2108531
+  (Windows guest reboot after migration with wsl2 installed inside)
+
+* Thu Sep 29 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.1.0-2
+- kvm-vdpa-Skip-the-maps-not-in-the-iova-tree.patch [RHELX-57]
+- kvm-vdpa-do-not-save-failed-dma-maps-in-SVQ-iova-tree.patch [RHELX-57]
+- kvm-util-accept-iova_tree_remove_parameter-by-value.patch [RHELX-57]
+- kvm-vdpa-Remove-SVQ-vring-from-iova_tree-at-shutdown.patch [RHELX-57]
+- kvm-vdpa-Make-SVQ-vring-unmapping-return-void.patch [RHELX-57]
+- kvm-vhost-Always-store-new-kick-fd-on-vhost_svq_set_svq_.patch [RHELX-57]
+- kvm-vdpa-Use-ring-hwaddr-at-vhost_vdpa_svq_unmap_ring.patch [RHELX-57]
+- kvm-vhost-stop-transfer-elem-ownership-in-vhost_handle_g.patch [RHELX-57]
+- kvm-vhost-use-SVQ-element-ndescs-instead-of-opaque-data-.patch [RHELX-57]
+- kvm-vhost-Delete-useless-read-memory-barrier.patch [RHELX-57]
+- kvm-vhost-Do-not-depend-on-NULL-VirtQueueElement-on-vhos.patch [RHELX-57]
+- kvm-vhost_net-Add-NetClientInfo-start-callback.patch [RHELX-57]
+- kvm-vhost_net-Add-NetClientInfo-stop-callback.patch [RHELX-57]
+- kvm-vdpa-add-net_vhost_vdpa_cvq_info-NetClientInfo.patch [RHELX-57]
+- kvm-vdpa-Move-command-buffers-map-to-start-of-net-device.patch [RHELX-57]
+- kvm-vdpa-extract-vhost_vdpa_net_cvq_add-from-vhost_vdpa_.patch [RHELX-57]
+- kvm-vhost_net-add-NetClientState-load-callback.patch [RHELX-57]
+- kvm-vdpa-Add-virtio-net-mac-address-via-CVQ-at-start.patch [RHELX-57]
+- kvm-vdpa-Delete-CVQ-migration-blocker.patch [RHELX-57]
+- kvm-vdpa-Make-VhostVDPAState-cvq_cmd_in_buffer-control-a.patch [RHELX-57]
+- kvm-vdpa-extract-vhost_vdpa_net_load_mac-from-vhost_vdpa.patch [RHELX-57]
+- kvm-vdpa-Add-vhost_vdpa_net_load_mq.patch [RHELX-57]
+- kvm-vdpa-validate-MQ-CVQ-commands.patch [RHELX-57]
+- kvm-virtio-net-Update-virtio-net-curr_queue_pairs-in-vdp.patch [RHELX-57]
+- kvm-vdpa-Allow-MQ-feature-in-SVQ.patch [RHELX-57]
+- kvm-i386-reset-KVM-nested-state-upon-CPU-reset.patch [bz#2125281]
+- kvm-i386-do-kvm_put_msr_feature_control-first-thing-when.patch [bz#2125281]
+- kvm-Revert-Re-enable-capstone-internal-build.patch [bz#2127825]
+- kvm-spec-Use-capstone-package.patch [bz#2127825]
+- Resolves: RHELX-57
+  (vDPA SVQ Multiqueue support )
+- Resolves: bz#2125281
+  ([RHEL9.1] Guests in VMX root operation fail to reboot with QEMU's 'system_reset' command [rhel-9.2.0])
+- Resolves: bz#2127825
+  (Use capstone for qemu-kvm build)
+
+* Mon Sep 05 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.1.0-1
+- Rebase to QEMU 7.1.0 [bz#2111769]
+- Resolves: bz#2111769
+  (Rebase to QEMU 7.1.0)
 
 * Mon Aug 15 2022 Miroslav Rezanina <mrezanin@redhat.com> - 7.0.0-11
 - kvm-QIOChannelSocket-Fix-zero-copy-flush-returning-code-.patch [bz#2107466]
