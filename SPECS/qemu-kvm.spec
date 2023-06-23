@@ -148,7 +148,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 7.2.0
-Release: 14%{?rcrel}%{?dist}%{?cc_suffix}
+Release: 14%{?rcrel}%{?dist}%{?cc_suffix}.1
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -416,6 +416,8 @@ Patch133: kvm-target-i386-Fix-32-bit-AD-CO-X-insns-in-64-bit-mode.patch
 Patch134: kvm-target-i386-Fix-BZHI-instruction.patch
 # For bz#2156876 - [virtual network][rhel7.9_guest] qemu-kvm: vhost vring error in virtqueue 1: Invalid argument (22)
 Patch135: kvm-intel-iommu-fail-DEVIOTLB_UNMAP-without-dt-mode.patch
+# For bz#2203745 - Disk detach is unsuccessful while the guest is still booting [rhel-9.2.0.z]
+Patch136: kvm-acpi-pcihp-allow-repeating-hot-unplug-requests.patch
 
 %if %{have_clang}
 BuildRequires: clang
@@ -1446,6 +1448,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Thu May 25 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.1
+- kvm-acpi-pcihp-allow-repeating-hot-unplug-requests.patch [bz#2203745]
+- Resolves: bz#2203745
+  (Disk detach is unsuccessful while the guest is still booting [rhel-9.2.0.z])
+
 * Mon Mar 20 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14
 - Rebuild for 9.2 release
 - Resolves: bz#2173590
