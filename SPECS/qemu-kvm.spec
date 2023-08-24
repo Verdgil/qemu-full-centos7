@@ -148,7 +148,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 7.2.0
-Release: 14%{?rcrel}%{?dist}%{?cc_suffix}.1
+Release: 14%{?rcrel}%{?dist}%{?cc_suffix}.3
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -418,6 +418,10 @@ Patch134: kvm-target-i386-Fix-BZHI-instruction.patch
 Patch135: kvm-intel-iommu-fail-DEVIOTLB_UNMAP-without-dt-mode.patch
 # For bz#2203745 - Disk detach is unsuccessful while the guest is still booting [rhel-9.2.0.z]
 Patch136: kvm-acpi-pcihp-allow-repeating-hot-unplug-requests.patch
+# For bz#2213864 - [mlx vhost_vdpa][rhel 9.2]qemu core dump when hot unplug then hotplug a vdpa interface with multi-queue setting [rhel-9.2.0.z]
+Patch137: kvm-vdpa-stop-all-svq-on-device-deletion.patch
+# For bz#2221219 - query-stats QMP command interrupts vcpus, the Max Latencies could be more than 100us (rhel 9.3.0 clone) [rhel-9.2.0.z]
+Patch138: kvm-kvm-reuse-per-vcpu-stats-fd-to-avoid-vcpu-interrupti.patch
 
 %if %{have_clang}
 BuildRequires: clang
@@ -1448,6 +1452,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Tue Jul 11 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.3
+- kvm-kvm-reuse-per-vcpu-stats-fd-to-avoid-vcpu-interrupti.patch [bz#2221219]
+- Resolves: bz#2221219
+  (query-stats QMP command interrupts vcpus, the Max Latencies could be more than 100us (rhel 9.3.0 clone) [rhel-9.2.0.z])
+
+* Mon Jun 19 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.2
+- kvm-vdpa-stop-all-svq-on-device-deletion.patch [bz#2213864]
+- Resolves: bz#2213864
+  ([mlx vhost_vdpa][rhel 9.2]qemu core dump when hot unplug then hotplug a vdpa interface with multi-queue setting [rhel-9.2.0.z])
+
 * Thu May 25 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.1
 - kvm-acpi-pcihp-allow-repeating-hot-unplug-requests.patch [bz#2203745]
 - Resolves: bz#2203745
