@@ -148,7 +148,7 @@ Obsoletes: %{name}-block-ssh <= %{epoch}:%{version}                    \
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
 Version: 7.2.0
-Release: 14%{?rcrel}%{?dist}%{?cc_suffix}.3
+Release: 14%{?rcrel}%{?dist}%{?cc_suffix}.5
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 # Epoch 15 used for RHEL 8
 # Epoch 17 used for RHEL 9 (due to release versioning offset in RHEL 8.5)
@@ -422,6 +422,18 @@ Patch136: kvm-acpi-pcihp-allow-repeating-hot-unplug-requests.patch
 Patch137: kvm-vdpa-stop-all-svq-on-device-deletion.patch
 # For bz#2221219 - query-stats QMP command interrupts vcpus, the Max Latencies could be more than 100us (rhel 9.3.0 clone) [rhel-9.2.0.z]
 Patch138: kvm-kvm-reuse-per-vcpu-stats-fd-to-avoid-vcpu-interrupti.patch
+# For bz#2211923 - [qemu-kvm] rhel guest failed boot with multi disks on error Failed to start udev Wait for Complete Device Initialization [rhel-9.2.0.z]
+Patch139: kvm-aio-posix-fix-race-between-epoll-upgrade-and-aio_set.patch
+# For bz#2227721 - [rhel9.2] hotplug/hotunplug mlx vdpa device to the occupied addr port, then qemu core dump occurs after shutdown guest [rhel-9.2.0.z]
+Patch140: kvm-vhost-vdpa-do-not-cleanup-the-vdpa-vhost-net-structu.patch
+# For RHEL-1060 - [vhost-vdpa][rhel 9.2]Boot a guest with "x-svq=on", then hot unplug this nic, guest  trigger qemu core dump [rhel-9.2.0.z]
+Patch141: kvm-vdpa-net-move-iova-tree-creation-from-init-to-start.patch
+# For RHEL-1060 - [vhost-vdpa][rhel 9.2]Boot a guest with "x-svq=on", then hot unplug this nic, guest  trigger qemu core dump [rhel-9.2.0.z]
+Patch142: kvm-vdpa-reorder-vhost_vdpa_net_cvq_cmd_page_len-functio.patch
+# For RHEL-1060 - [vhost-vdpa][rhel 9.2]Boot a guest with "x-svq=on", then hot unplug this nic, guest  trigger qemu core dump [rhel-9.2.0.z]
+Patch143: kvm-vdpa-map-shadow-vrings-with-MAP_SHARED.patch
+# For bz#2216503 - CVE-2023-3354 qemu-kvm: QEMU: VNC: improper I/O watch removal in TLS handshake can lead to remote unauthenticated denial of service [rhel-9.2.0.z]
+Patch144: kvm-io-remove-io-watch-if-TLS-channel-is-closed-during-h.patch
 
 %if %{have_clang}
 BuildRequires: clang
@@ -1452,6 +1464,24 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Mon Aug 21 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.5
+- kvm-vdpa-net-move-iova-tree-creation-from-init-to-start.patch [RHEL-1060]
+- kvm-vdpa-reorder-vhost_vdpa_net_cvq_cmd_page_len-functio.patch [RHEL-1060]
+- kvm-vdpa-map-shadow-vrings-with-MAP_SHARED.patch [RHEL-1060]
+- kvm-io-remove-io-watch-if-TLS-channel-is-closed-during-h.patch [bz#2216503]
+- Resolves: RHEL-1060
+  ([vhost-vdpa][rhel 9.2]Boot a guest with "x-svq=on", then hot unplug this nic, guest  trigger qemu core dump [rhel-9.2.0.z])
+- Resolves: bz#2216503
+  (CVE-2023-3354 qemu-kvm: QEMU: VNC: improper I/O watch removal in TLS handshake can lead to remote unauthenticated denial of service [rhel-9.2.0.z])
+
+* Mon Aug 07 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.4
+- kvm-aio-posix-fix-race-between-epoll-upgrade-and-aio_set.patch [bz#2211923]
+- kvm-vhost-vdpa-do-not-cleanup-the-vdpa-vhost-net-structu.patch [bz#2227721]
+- Resolves: bz#2211923
+  ([qemu-kvm] rhel guest failed boot with multi disks on error Failed to start udev Wait for Complete Device Initialization [rhel-9.2.0.z])
+- Resolves: bz#2227721
+  ([rhel9.2] hotplug/hotunplug mlx vdpa device to the occupied addr port, then qemu core dump occurs after shutdown guest [rhel-9.2.0.z])
+
 * Tue Jul 11 2023 Miroslav Rezanina <mrezanin@redhat.com> - 7.2.0-14.el9_2.3
 - kvm-kvm-reuse-per-vcpu-stats-fd-to-avoid-vcpu-interrupti.patch [bz#2221219]
 - Resolves: bz#2221219
