@@ -1,3 +1,3 @@
 git pull
-cp -r SOURCES ~/rpmbuild/SOURCES
+cp -r SOURCES ~/rpmbuild
 rpmbuild -ba ./SPECS/qemu-kvm.spec
